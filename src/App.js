@@ -58,20 +58,22 @@ class App extends Component {
     }
   }
   timerControl() {
-    let control = this.state.timerState == 'stopped' ? (
+    console.log('this.state.intervalID: ' + this.state.intervalID);
+    let control = this.state.timerState === 'stopped' ? (
       this.beginCountDown(),
       this.setState({timerState: 'running'})
     ) : (
-      this.setState({timerState: 'stopped'}),
-      this.state.intervalID && this.state.intervalID.cancel()
+      this.state.intervalID && clearInterval(this.state.intervalID),
+      this.setState({timerState: 'stopped'})
     );
+  }
+  accurateInterval() {
+    this.decrementTimer();
+    this.phaseControl();
   }
   beginCountDown() {
     this.setState({
-      intervalID: accurateInterval(() => {
-        this.decrementTimer();
-        this.phaseControl();
-       }, 1000)
+      intervalID: setInterval(this.accurateInterval.bind(this), 1000)
     })
   }
   decrementTimer() {
@@ -82,12 +84,12 @@ class App extends Component {
     this.warning(timer);
     this.buzzer(timer);
     if (timer < 0) {
-      this.state.timerType == 'Session' ? (
-        this.state.intervalID && this.state.intervalID.cancel(),
+      this.state.timerType === 'Session' ? (
+        this.state.intervalID && clearInterval(this.state.intervalID),
         this.beginCountDown(),
         this.switchTimer(this.state.brkLength * 60, 'Break')
       ) : (
-        this.state.intervalID && this.state.intervalID.cancel(),
+        this.state.intervalID && clearInterval(this.state.intervalID),
         this.beginCountDown(),
         this.switchTimer(this.state.seshLength * 60, 'Session')
       );
@@ -127,7 +129,7 @@ class App extends Component {
       intervalID: '',
       alarmColor: {color: 'white'}
     });
-    this.state.intervalID && this.state.intervalID.cancel();
+    this.state.intervalID && clearInterval(this.state.intervalID);
     this.audioBeep.pause();
     this.audioBeep.currentTime = 0;
   }
@@ -163,7 +165,7 @@ class App extends Component {
             <i className="fa fa-pause fa-2x"/>
           </button>
           <button id="reset" onClick={this.reset}>
-            <i className="fa fa-refresh fa-2x"/>
+            <i className="fas fa-redo fa-2x"></i>
           </button>
         </div>
         <div className="author"> Designed and Coded by <br />
