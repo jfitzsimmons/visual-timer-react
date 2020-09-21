@@ -1,11 +1,11 @@
 {
-  "name": "fcc-pomodoro",
+  "name": "visual-timer-react",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://jfitzsimmons.github.io/fcc-pomodoro",
+  "homepage": "https://jfitzsimmons.github.io/visual-timer-react/",
   "dependencies": {
-    "gh-pages": "^2.0.1",
-    "node-sass": "^4.9.3",
+    "gh-pages": "^2.2.0",
+    "node-sass": "^4.14.1",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-scripts": "2.0.4"
