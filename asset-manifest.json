@@ -1,14 +1,14 @@
 {
-  "main.css": "/fcc-pomodoro/static/css/main.b8c7d31f.chunk.css",
-  "main.js": "/fcc-pomodoro/static/js/main.8dc6100b.chunk.js",
-  "main.js.map": "/fcc-pomodoro/static/js/main.8dc6100b.chunk.js.map",
-  "static/js/1.31d9713e.chunk.js": "/fcc-pomodoro/static/js/1.31d9713e.chunk.js",
-  "static/js/1.31d9713e.chunk.js.map": "/fcc-pomodoro/static/js/1.31d9713e.chunk.js.map",
-  "runtime~main.js": "/fcc-pomodoro/static/js/runtime~main.c6abe9de.js",
-  "runtime~main.js.map": "/fcc-pomodoro/static/js/runtime~main.c6abe9de.js.map",
-  "static/media/logo.svg": "/fcc-pomodoro/static/media/logo.5d5d9eef.svg",
-  "static/css/main.b8c7d31f.chunk.css.map": "/fcc-pomodoro/static/css/main.b8c7d31f.chunk.css.map",
-  "index.html": "/fcc-pomodoro/index.html",
-  "precache-manifest.ee88fd25d334d35ee78dbf6167107515.js": "/fcc-pomodoro/precache-manifest.ee88fd25d334d35ee78dbf6167107515.js",
-  "service-worker.js": "/fcc-pomodoro/service-worker.js"
+  "main.css": "/visual-timer-react/static/css/main.51cbae54.chunk.css",
+  "main.js": "/visual-timer-react/static/js/main.46d400ec.chunk.js",
+  "main.js.map": "/visual-timer-react/static/js/main.46d400ec.chunk.js.map",
+  "static/js/1.5056edbd.chunk.js": "/visual-timer-react/static/js/1.5056edbd.chunk.js",
+  "static/js/1.5056edbd.chunk.js.map": "/visual-timer-react/static/js/1.5056edbd.chunk.js.map",
+  "runtime~main.js": "/visual-timer-react/static/js/runtime~main.7fbc1b93.js",
+  "runtime~main.js.map": "/visual-timer-react/static/js/runtime~main.7fbc1b93.js.map",
+  "static/media/logo.svg": "/visual-timer-react/static/media/logo.5d5d9eef.svg",
+  "static/css/main.51cbae54.chunk.css.map": "/visual-timer-react/static/css/main.51cbae54.chunk.css.map",
+  "index.html": "/visual-timer-react/index.html",
+  "precache-manifest.e248743025cf40f4c9995c3f9b7383aa.js": "/visual-timer-react/precache-manifest.e248743025cf40f4c9995c3f9b7383aa.js",
+  "service-worker.js": "/visual-timer-react/service-worker.js"
 }
