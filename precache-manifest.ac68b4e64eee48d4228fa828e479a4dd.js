@@ -16,7 +16,7 @@ self.__precacheManifest = [
     "url": "/visual-timer-react/static/js/runtime~main.7fbc1b93.js"
   },
   {
-    "revision": "944746b6a538187d037318de0c3de1b1",
+    "revision": "2060625ed1cb1c9d86badcc4531cbe04",
     "url": "/visual-timer-react/index.html"
   }
 ];
