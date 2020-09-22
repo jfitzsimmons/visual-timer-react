@@ -1,14 +1,13 @@
 {
-  "main.css": "/visual-timer-react/static/css/main.51cbae54.chunk.css",
-  "main.js": "/visual-timer-react/static/js/main.46d400ec.chunk.js",
-  "main.js.map": "/visual-timer-react/static/js/main.46d400ec.chunk.js.map",
-  "static/js/1.5056edbd.chunk.js": "/visual-timer-react/static/js/1.5056edbd.chunk.js",
-  "static/js/1.5056edbd.chunk.js.map": "/visual-timer-react/static/js/1.5056edbd.chunk.js.map",
+  "main.css": "/visual-timer-react/static/css/main.f885e345.chunk.css",
+  "main.js": "/visual-timer-react/static/js/main.0d6d732d.chunk.js",
+  "main.js.map": "/visual-timer-react/static/js/main.0d6d732d.chunk.js.map",
+  "static/js/1.0eae3b23.chunk.js": "/visual-timer-react/static/js/1.0eae3b23.chunk.js",
+  "static/js/1.0eae3b23.chunk.js.map": "/visual-timer-react/static/js/1.0eae3b23.chunk.js.map",
   "runtime~main.js": "/visual-timer-react/static/js/runtime~main.7fbc1b93.js",
   "runtime~main.js.map": "/visual-timer-react/static/js/runtime~main.7fbc1b93.js.map",
-  "static/media/logo.svg": "/visual-timer-react/static/media/logo.5d5d9eef.svg",
-  "static/css/main.51cbae54.chunk.css.map": "/visual-timer-react/static/css/main.51cbae54.chunk.css.map",
+  "static/css/main.f885e345.chunk.css.map": "/visual-timer-react/static/css/main.f885e345.chunk.css.map",
   "index.html": "/visual-timer-react/index.html",
-  "precache-manifest.e248743025cf40f4c9995c3f9b7383aa.js": "/visual-timer-react/precache-manifest.e248743025cf40f4c9995c3f9b7383aa.js",
+  "precache-manifest.226d76f191dfa9c3ca93c8315e504fdb.js": "/visual-timer-react/precache-manifest.226d76f191dfa9c3ca93c8315e504fdb.js",
   "service-worker.js": "/visual-timer-react/service-worker.js"
 }
