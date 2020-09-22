@@ -12,17 +12,18 @@ render() {
       <div id={this.props.titleID}>
         {this.props.title}
       </div>
-      <button id={this.props.minID}
-        className="btn-level" value="-"
-        onClick={this.props.onClick}>
-        <i className="fa fa-arrow-down fa-2x"/>
-      </button>
+      <input id={this.props.minID}
+        className="btn-level" defaultValue={this.props.length}
+        onChange={this.props.onClick}
+        >
+        
+      </input>
       <div id={this.props.lengthID} className="btn-level">
         {this.props.length}
       </div>
       <button id={this.props.addID}
         className="btn-level" value="+"
-        onClick={this.props.onClick}>
+        >
         <i className="fa fa-arrow-up fa-2x"/>
       </button>
     </div>
