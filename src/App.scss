@@ -5,8 +5,8 @@
 }
 
 body {
-  background: #1E555C;
-  color: white;
+  background: #fff;
+  color: #222;
   font-size: 30px;
   text-align: center;
   font-family: 'Righteous';
@@ -19,6 +19,47 @@ body {
       font-size: 50px;
       margin-bottom: 20px;
     }
+
+    div {
+      position: relative;
+    }
+    
+    input {
+      width: 6.5em;
+      color: #222;
+      font-size: inherit;
+      font-family: inherit;
+      background-color: transparent;
+      border: 1px solid transparent;
+      border-bottom-color: hsla(341, 97%, 59%, 0.2);
+      text-align: center;
+    }
+    
+    input:focus {
+      outline: none;
+    }
+    
+    input::placeholder {
+      color: hsla(0, 0%, 100%, 0.6);
+    }
+    
+    span {
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 100%;
+      height: 1px;
+      opacity: 0;
+      background-color: #fc2f70;
+      transform-origin: center;
+      transform: translate(-50%, 0) scaleX(0);
+      transition: all 0.3s ease;
+    }
+    
+    input:focus ~ span {
+      transform: translate(-50%, 0) scaleX(1);
+      opacity: 1;
+    }
     .length-control {
       width: 250px;
     }
@@ -26,7 +67,7 @@ body {
       background: none;
       outline: none;
       border: none;
-      color: white;
+      color: #222;
       cursor: pointer;
     }
     .btn-level,
@@ -38,21 +79,12 @@ body {
       }
     }
     .timer {
-      border: 7px solid #13353a;
+      border-width: 7px;
+      border-color: hsla(341, 97%, 59%, 0.2);
+      border-style: solid;
       margin: 20px auto 10px auto;
-      width: 270px;
-      height: 160px;
       border-radius: 50px;
-      position: relative;
-      .timer-wrapper {
-        position: absolute;
-        width: 190px;
-        height: 110px;
-        left: 50%;
-        top: 50%;
-        margin-left: -95px;
-        margin-top: -57px;
-      }
+      padding: 15px 15px 0 15px;
       #time-left {
         font-family: digital;
         font-size: 80px;
@@ -71,18 +103,5 @@ body {
     -moz-transform: scale(0.8);
     -ms-transform: scale(0.8);
     -o-transform: scale(0.8);
-  }
-}
-
-.author {
-  text-align: center;
-  font-family: Share Tech Mono, sans;
-  margin-top: 15px;
-  font-size: 14px;
-  color: #a50d0d;;
-  a {
-    text-decoration: none;
-    color: #00264d;
-    line-height: 26px;
   }
 }

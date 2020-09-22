@@ -1,3 +1,4 @@
+
 /* eslint-disable no-unused-expressions */
 /* eslint-disable no-undef */
 
@@ -15,7 +16,7 @@ class App extends Component {
       timerType: 'Session',
       timer: 600,
       intervalID: '',
-      alarmColor: {color: 'white'}
+      alarmColor: {color: '#222', borderColor: 'hsla(341, 97%, 59%, 0.2)'}
     }
     this.setBrkLength = this.setBrkLength.bind(this);
     this.setSeshLength = this.setSeshLength.bind(this);
@@ -45,13 +46,18 @@ class App extends Component {
   }
 
   timerControl() {
-    console.log('this.state.intervalID: ' + this.state.intervalID);
     let control = this.state.timerState === 'stopped' ? (
       this.beginCountDown(),
-      this.setState({timerState: 'running'})
+      this.setState({
+        timerState: 'running',
+        alarmColor: {color: '#222', borderColor: 'hsla(341, 97%, 59%, 1)'}
+      })
     ) : (
       this.state.intervalID && clearInterval(this.state.intervalID),
-      this.setState({timerState: 'stopped'})
+      this.setState({
+        timerState: 'stopped',
+        alarmColor: {color: '#222', borderColor: 'hsla(341, 97%, 59%, .2)'}
+      })
     );
   }
   accurateInterval() {
@@ -72,13 +78,14 @@ class App extends Component {
   }
   phaseControl() {
     let timer = this.state.timer;
-    this.warning(timer);
+    
     //this.buzzer(timer);
     if (timer < 0) {
       this.state.timerType === 'Session' ? (
         this.state.intervalID && clearInterval(this.state.intervalID),
         this.beginCountDown(),
-        this.switchTimer(0, 'Break')
+        this.switchTimer(0, 'Break'),
+        this.warning(timer)
       ) : (
         this.state.intervalID && clearInterval(this.state.intervalID),
         this.beginCountDown(),
@@ -89,18 +96,18 @@ class App extends Component {
   warning(_timer) {
     let warn = _timer < 61 ?
     this.setState({alarmColor: {color: '#a50d0d'}}) :
-    this.setState({alarmColor: {color: 'white'}});
+    this.setState({alarmColor: {color: '#222'}});
   }
   buzzer(_timer) {
     if (_timer === 0) {
-      this.audioBeep.play();
+      // this.audioBeep.play();
     }
   }
   switchTimer(num, str) {
     this.setState({
       timer: num,
       timerType: str,
-      alarmColor: {color: 'white'}
+      alarmColor: {color: '#222'}
     })
   }
   clockify() {
@@ -117,22 +124,17 @@ class App extends Component {
       timerType: 'Session',
       timer: 600,
       intervalID: '',
-      alarmColor: {color: 'white'}
+      alarmColor: {color: '#222'}
     });
     this.state.intervalID && clearInterval(this.state.intervalID);
-    this.audioBeep.pause();
-    this.audioBeep.currentTime = 0;
   }
   render() {
     return (
       <div>
-        <div className="main-title">
-          Pomodoro Clock
-        </div>
         <TimerLengthControl
           titleID="session-label"   minID="session-decrement"
           addID="session-increment" lengthID="session-length"
-          title="Session Length"    onClick={this.setSeshLength}
+          title="Minutes"    onClick={this.setSeshLength}
           length={this.state.seshLength}/>
         <div className="timer" style={this.state.alarmColor}>
           <div className="timer-wrapper">
@@ -153,10 +155,6 @@ class App extends Component {
             <i className="fas fa-redo fa-2x"></i>
           </button>
         </div>
-
-        <audio id="beep" preload="auto"
-          src="https://goo.gl/65cBl1"
-          ref={(audio) => { this.audioBeep = audio; }} />
       </div>
     )
   }
