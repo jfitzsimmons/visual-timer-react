@@ -16,7 +16,7 @@ class App extends Component {
       timerType: 'Session',
       timer: 600,
       intervalID: '',
-      alarmColor: {color: '#222', borderColor: 'hsla(341, 97%, 59%, 0.2)'}
+      alarmColor: {color: '#222', borderColor: 'hsla(13, 98%, 49%, 0.2)'}
     }
     this.setBrkLength = this.setBrkLength.bind(this);
     this.setSeshLength = this.setSeshLength.bind(this);
@@ -29,6 +29,7 @@ class App extends Component {
     this.buzzer = this.buzzer.bind(this);
     this.switchTimer = this.switchTimer.bind(this);
     this.clockify = this.clockify.bind(this);
+    this.onKeyUp = this.onKeyUp.bind(this);
     this.reset = this.reset.bind(this);
   }
   setBrkLength(e) {
@@ -40,7 +41,7 @@ class App extends Component {
     this.state.seshLength, 'Break');
   }
   lengthControl(stateToChange, sign, currentLength, timerType) {
-    if (this.state.timerState == 'running') return;
+    if (this.state.timerState === 'running') return;
         this.setState({[stateToChange]: sign,
           timer: sign * 60});
   }
@@ -50,13 +51,13 @@ class App extends Component {
       this.beginCountDown(),
       this.setState({
         timerState: 'running',
-        alarmColor: {color: '#222', borderColor: 'hsla(341, 97%, 59%, 1)'}
+        alarmColor: {color: '#222', borderColor: 'hsla(13, 98%, 49%, 1)'}
       })
     ) : (
       this.state.intervalID && clearInterval(this.state.intervalID),
       this.setState({
         timerState: 'stopped',
-        alarmColor: {color: '#222', borderColor: 'hsla(341, 97%, 59%, .2)'}
+        alarmColor: {color: '#222', borderColor: 'hsla(13, 98%, 49%, .2)'}
       })
     );
   }
@@ -117,12 +118,26 @@ class App extends Component {
     minutes = minutes < 10 ? '0' + minutes : minutes;
     return minutes + ':' + seconds;
   }
+  onKeyUp(e) {
+    
+    if (e.charCode === 13) {
+      console.log('onKeyUp inside ENTER');
+      this.reset();
+      console.log(`1 this.state.timerState: ${this.state.timerState}`);
+      this.timerControl();
+        
+        console.log(`2 this.state.timerState: ${this.state.timerState}`);
+
+    }
+      
+  }
   reset() {
+    let currentSeshLength = this.state.seshLength;
+    console.log(`currentSeshLength * 60 - RESet: ${currentSeshLength}`)
     this.setState({
-      seshLength: 10,
       timerState: 'stopped',
       timerType: 'Session',
-      timer: 600,
+      timer: currentSeshLength * 60,
       intervalID: '',
       alarmColor: {color: '#222'}
     });
@@ -135,7 +150,7 @@ class App extends Component {
           titleID="session-label"   minID="session-decrement"
           addID="session-increment" lengthID="session-length"
           title="Minutes"    onClick={this.setSeshLength}
-          length={this.state.seshLength}/>
+          length={this.state.seshLength} clickEnter={this.onKeyUp} />
         <div className="timer" style={this.state.alarmColor}>
           <div className="timer-wrapper">
             <div id='timer-label'>
@@ -147,7 +162,8 @@ class App extends Component {
           </div>
         </div>
         <div className="timer-control">
-          <button id="start_stop" onClick={this.timerControl}>
+          <button id="start_stop" onClick={this.timerControl}
+            onKeyPress={this.onKeyUp}>
             <i className="fa fa-play fa-2x"/>
             <i className="fa fa-pause fa-2x"/>
           </button>
