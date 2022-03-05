@@ -5,7 +5,7 @@
   "homepage": "https://jfitzsimmons.github.io/visual-timer-react/",
   "dependencies": {
     "gh-pages": "^2.2.0",
-    "node-sass": "^4.14.1",
+    "node-sass": "^7.0.0",
     "react": "^16.5.2",
     "react-dom": "^16.5.2",
     "react-scripts": "4.0.3"
