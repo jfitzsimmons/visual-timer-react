@@ -58,26 +58,26 @@ class App extends Component {
       timer: sign * 60
     });
   }
-
   timerControl() {
-    let control =
-      this.state.timerState === "stopped" ?
-      (this.beginCountDown(),
-        this.setState({
-          timerState: "running",
-          alarmColor: {
-            color: "#222",
-            borderColor: "hsla(13, 98%, 49%, 1)"
-          },
-        })) :
-      (this.state.intervalID && clearInterval(this.state.intervalID),
-        this.setState({
-          timerState: "stopped",
-          alarmColor: {
-            color: "#222",
-            borderColor: "hsla(13, 98%, 49%, .2)",
-          },
-        }));
+    if (this.state.timerState === "stopped") {
+    this.beginCountDown();
+      this.setState({
+        timerState: "running",
+        alarmColor: {
+          color: "#222",
+          borderColor: "hsla(13, 98%, 49%, 1)"
+        },
+      }) 
+    } else {
+      this.state.intervalID && clearInterval(this.state.intervalID);
+      this.setState({
+        timerState: "stopped",
+        alarmColor: {
+          color: "#222",
+          borderColor: "hsla(13, 98%, 49%, .2)",
+        },
+      })
+    };
   }
   accurateInterval() {
     this.decrementTimer();
@@ -115,18 +115,17 @@ class App extends Component {
     }
   }
   warning(_timer) {
-    let warn =
-      _timer < 61 ?
-      this.setState({
-        alarmColor: {
-          color: "#a50d0d"
-        }
-      }) :
-      this.setState({
-        alarmColor: {
-          color: "#222"
-        }
-      });
+    _timer < 61 ?
+    this.setState({
+      alarmColor: {
+        color: "#a50d0d"
+      }
+    }) :
+    this.setState({
+      alarmColor: {
+        color: "#222"
+      }
+    });
   }
   buzzer(_timer) {
     if (_timer === 0) {
