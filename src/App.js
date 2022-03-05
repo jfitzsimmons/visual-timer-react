@@ -1,9 +1,10 @@
-/* eslint-disable no-unused-expressions */
-/* eslint-disable no-undef */
-
-import React, { Component } from "react";
+import React, {
+  Component
+} from "react";
 import "./App.scss";
-import { TimerLengthControl } from "./Control.js";
+import {
+  TimerLengthControl
+} from "./Control.js";
 
 class App extends Component {
   constructor(props) {
@@ -15,7 +16,10 @@ class App extends Component {
       timerType: "Session",
       timer: 600,
       intervalID: "",
-      alarmColor: { color: "#222", borderColor: "hsla(13, 98%, 49%, 0.2)" },
+      alarmColor: {
+        color: "#222",
+        borderColor: "hsla(13, 98%, 49%, 0.2)"
+      },
     };
     this.setBrkLength = this.setBrkLength.bind(this);
     this.setSeshLength = this.setSeshLength.bind(this);
@@ -49,25 +53,31 @@ class App extends Component {
   }
   lengthControl(stateToChange, sign, currentLength, timerType) {
     if (this.state.timerState === "running") return;
-    this.setState({ [stateToChange]: sign, timer: sign * 60 });
+    this.setState({
+      [stateToChange]: sign,
+      timer: sign * 60
+    });
   }
 
   timerControl() {
     let control =
-      this.state.timerState === "stopped"
-        ? (this.beginCountDown(),
-          this.setState({
-            timerState: "running",
-            alarmColor: { color: "#222", borderColor: "hsla(13, 98%, 49%, 1)" },
-          }))
-        : (this.state.intervalID && clearInterval(this.state.intervalID),
-          this.setState({
-            timerState: "stopped",
-            alarmColor: {
-              color: "#222",
-              borderColor: "hsla(13, 98%, 49%, .2)",
-            },
-          }));
+      this.state.timerState === "stopped" ?
+      (this.beginCountDown(),
+        this.setState({
+          timerState: "running",
+          alarmColor: {
+            color: "#222",
+            borderColor: "hsla(13, 98%, 49%, 1)"
+          },
+        })) :
+      (this.state.intervalID && clearInterval(this.state.intervalID),
+        this.setState({
+          timerState: "stopped",
+          alarmColor: {
+            color: "#222",
+            borderColor: "hsla(13, 98%, 49%, .2)",
+          },
+        }));
   }
   accurateInterval() {
     this.decrementTimer();
@@ -80,9 +90,13 @@ class App extends Component {
   }
   decrementTimer() {
     if (this.state.timerType === "Session") {
-      this.setState({ timer: this.state.timer - 1 });
+      this.setState({
+        timer: this.state.timer - 1
+      });
     } else {
-      this.setState({ timer: this.state.timer + 1 });
+      this.setState({
+        timer: this.state.timer + 1
+      });
     }
   }
   phaseControl() {
@@ -90,21 +104,29 @@ class App extends Component {
 
     //this.buzzer(timer);
     if (timer < 0) {
-      this.state.timerType === "Session"
-        ? (this.state.intervalID && clearInterval(this.state.intervalID),
+      this.state.timerType === "Session" ?
+        (this.state.intervalID && clearInterval(this.state.intervalID),
           this.beginCountDown(),
           this.switchTimer(0, "Break"),
-          this.warning(timer))
-        : (this.state.intervalID && clearInterval(this.state.intervalID),
+          this.warning(timer)) :
+        (this.state.intervalID && clearInterval(this.state.intervalID),
           this.beginCountDown(),
           this.switchTimer(this.state.seshLength * 60, "Session"));
     }
   }
   warning(_timer) {
     let warn =
-      _timer < 61
-        ? this.setState({ alarmColor: { color: "#a50d0d" } })
-        : this.setState({ alarmColor: { color: "#222" } });
+      _timer < 61 ?
+      this.setState({
+        alarmColor: {
+          color: "#a50d0d"
+        }
+      }) :
+      this.setState({
+        alarmColor: {
+          color: "#222"
+        }
+      });
   }
   buzzer(_timer) {
     if (_timer === 0) {
@@ -115,7 +137,9 @@ class App extends Component {
     this.setState({
       timer: num,
       timerType: str,
-      alarmColor: { color: "#222" },
+      alarmColor: {
+        color: "#222"
+      },
     });
   }
   clockify() {
@@ -143,42 +167,52 @@ class App extends Component {
       timerType: "Session",
       timer: currentSeshLength * 60,
       intervalID: "",
-      alarmColor: { color: "#222" },
+      alarmColor: {
+        color: "#222"
+      },
     });
     this.state.intervalID && clearInterval(this.state.intervalID);
   }
   render() {
-    return (
-      <div>
-        <TimerLengthControl
-          titleID="session-label"
-          minID="session-decrement"
-          addID="session-increment"
-          lengthID="session-length"
-          title="Minutes"
-          onClick={this.setSeshLength}
-          length={this.state.seshLength}
-          clickEnter={this.onKeyUp}
-        />
-        <div className="timer" style={this.state.alarmColor}>
-          <div className="timer-wrapper">
-            <div id="timer-label">{this.state.timerType}</div>
-            <div id="time-left">{this.clockify()}</div>
-          </div>
-        </div>
-        <div className="timer-control">
-          <button
-            id="start_stop"
-            onClick={this.timerControl}
-            onKeyPress={this.onKeyUp}
-          >
-            <i className="fa fa-play fa-2x" />
-            <i className="fa fa-pause fa-2x" />
-          </button>
-          <button id="reset" onClick={this.reset}>
-            <i className="fas fa-redo fa-2x"></i>
-          </button>
-        </div>
+    return ( <div>
+      <TimerLengthControl titleID = "session-label"
+      minID = "session-decrement"
+      addID = "session-increment"
+      lengthID = "session-length"
+      title = "Minutes"
+      onClick = {
+        this.setSeshLength
+      }
+      length = {
+        this.state.seshLength
+      }
+      clickEnter = {
+        this.onKeyUp
+      }
+      /> <div className = "timer"
+      style = {
+        this.state.alarmColor
+      } >
+      <div className = "timer-wrapper" >
+      <div id = "timer-label" > {
+        this.state.timerType
+      } </div> <div id = "time-left" > {
+        this.clockify()
+      } </div> </div > </div> <div className = "timer-control" >
+      <button id = "start_stop"
+      onClick = {
+        this.timerControl
+      }
+      onKeyPress = {
+        this.onKeyUp
+      } >
+      <i className = "fa fa-play fa-2x" />
+      <i className = "fa fa-pause fa-2x" />
+      </button> <button id = "reset"
+      onClick = {
+        this.reset
+      } >
+      <i className = "fas fa-redo fa-2x" > </i> </button > </div> 
       </div>
     );
   }
