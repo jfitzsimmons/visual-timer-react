@@ -101,17 +101,17 @@ class App extends Component {
   }
   phaseControl() {
     let timer = this.state.timer;
-
-    //this.buzzer(timer);
     if (timer < 0) {
-      this.state.timerType === "Session" ?
-        (this.state.intervalID && clearInterval(this.state.intervalID),
-          this.beginCountDown(),
-          this.switchTimer(0, "Break"),
-          this.warning(timer)) :
-        (this.state.intervalID && clearInterval(this.state.intervalID),
-          this.beginCountDown(),
-          this.switchTimer(this.state.seshLength * 60, "Session"));
+      if (this.state.timerType === "Session") {
+        this.state.intervalID && clearInterval(this.state.intervalID);
+        this.beginCountDown();
+        this.switchTimer(0, "Break");
+        this.warning(timer)
+      } else {
+        this.state.intervalID && clearInterval(this.state.intervalID);
+        this.beginCountDown();
+        this.switchTimer(this.state.seshLength * 60, "Session")
+      };
     }
   }
   warning(_timer) {
