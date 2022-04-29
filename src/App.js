@@ -1,23 +1,58 @@
 import React, {
-  useState, useEffect
+  useState, useEffect, useRef
 } from "react";
 import "./App.scss";
 import {
   TimerLengthControl
 } from "./Control.js";
 // change to hooks TESTJPF!!
+function usePrevious(value) {
+  const ref = useRef();
+  useEffect(() => {
+    ref.current = value;
+  }, [value]);
+  return ref.current;
+}
+
+function useInterval(callback, delay) {
+  const savedCallback = useRef()
+
+  // Remember the latest callback.
+  useEffect(() => {
+    savedCallback.current = callback
+  }, [callback])
+
+  // Set up the interval.
+  useEffect(() => {
+    function tick() {
+      savedCallback.current()
+    }
+    if (delay !== null) {
+      let id = setInterval(tick, delay)
+      return () => clearInterval(id)
+    }
+  }, [delay])
+}
+
 function App() {
   const seshLength = 10;
   const [timerState, setTimerState] = useState("stopped");
   const [timerType, setTimerType] = useState("Session");
   const [timer, setTimer] = useState(600);
-  const [intervalID, setIntervalID] = useState(600);
   const [alarmColor, setAlarmColor] = useState({
     color: "#222",
     borderColor: "hsla(13, 98%, 49%, 0.2)"
   });
+  const intervalRef = useRef(null);
+  const prevIntervalRef = usePrevious(intervalRef.current);
+
+  const clear = () => {
+    console.log('CLEAR')
+    clearInterval(intervalRef.current);
+  };
 
   const handleSeshLength = (e) => {
+    console.log('handleSeshLength')
     setTimer(e.currentTarget.value * 60)
     /**
     lengthControl(
@@ -28,11 +63,11 @@ function App() {
     ); */
   }
 
-  useEffect(() => {
-    //Runs only on the first render
-  }, [timer]);
+
+
 
   const timerControl = () => {
+    console.log('timerControl')
     if (timerState === "stopped") {
       beginCountDown();
       setTimerState("running")
@@ -41,7 +76,7 @@ function App() {
         borderColor: "hsla(13, 98%, 49%, 1)"
       })
     } else {
-      intervalID && clearInterval(intervalID);
+      intervalRef.current && clear(intervalRef.current);
       setTimerState("stopped")
       setAlarmColor({
         color: "#222",
@@ -50,30 +85,35 @@ function App() {
     };
   }
   const accurateInterval = () => {
+    console.log('accurateInterval')
     decrementTimer();
     phaseControl();
   }
   const beginCountDown = () => {
-    //NEED USEREF FOR INTERVAL TEST JPF!!!!
-    setIntervalID(setInterval(accurateInterval.bind(), 1000))
+    console.log('beginCountDown')
   }
   const decrementTimer = () => {
+
     if (timerType === "Session") {
+      console.log(`decrementTimer TIMER: ${timer}`)
       setTimer(timer - 1)
     } else {
+      console.log(`increment TIMERTYPR: ${timerType}`)
       setTimer(timer + 1)
     }
   }
   const phaseControl = () => {
     let _t = timer;
     if (_t < 0) {
+      console.log(`TEST phaseControl`)
+
       if (timerType === "Session") {
-        intervalID && clearInterval(intervalID);
+        intervalRef.current && clear(intervalRef.current);
         beginCountDown();
         switchTimer(0, "Break");
         warning(_t)
       } else {
-        intervalID && clearInterval(intervalID);
+        intervalRef.current && clear(intervalRef.current);
         beginCountDown();
         switchTimer(seshLength * 60, "Session")
       };
@@ -100,6 +140,7 @@ function App() {
     })
   }
   const clockify = () => {
+    console.log(`clockify TIMER: ${timer}`)
     let minutes = Math.floor(timer / 60);
     let seconds = timer - minutes * 60;
     seconds = seconds < 10 ? "0" + seconds : seconds;
@@ -122,14 +163,19 @@ function App() {
     setTimerState("stopped");
     setTimerType("Session")
     setTimer(currentSeshLength * 60)
-    setIntervalID(-1)
     setAlarmColor({
       color: "#222",
       borderColor: "#222"
     })
-    intervalID && clearInterval(intervalID);
+    intervalRef.current && clear(intervalRef.current);
   }
-
+  useInterval(
+    () => {
+      accurateInterval();
+    },
+    timerState === "running" ? 1000 : null,
+    // passing null stops the interval
+  )
   return (<div>
     <TimerLengthControl titleID="session-label"
       minID="session-decrement"
