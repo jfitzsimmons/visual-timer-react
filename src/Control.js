@@ -13,7 +13,8 @@ export class TimerLengthControl extends Component {
             className="btn-level"
             defaultValue={this.props.length}
             onChange={this.props.onClick}
-            onKeyPress={this.props.clickEnter}></input>
+            onKeyPress={this.props.clickEnter}
+          ></input>
           <span></span>
         </div>
       </div>
