@@ -5,21 +5,13 @@ import "./App.scss";
 import {
   TimerLengthControl
 } from "./Control.js";
-// change to hooks TESTJPF!!
-function usePrevious(value) {
-  const ref = useRef();
-  useEffect(() => {
-    ref.current = value;
-  }, [value]);
-  return ref.current;
-}
 
 function useInterval(callback, delay) {
   const savedCallback = useRef()
 
   // Remember the latest callback.
   useEffect(() => {
-    savedCallback.current = callback
+    savedCallback.current = callback 
   }, [callback])
 
   // Set up the interval.
@@ -40,11 +32,10 @@ function App() {
   const [timerType, setTimerType] = useState("Session");
   const [timer, setTimer] = useState(600);
   const [alarmColor, setAlarmColor] = useState({
-    color: "#222",
+    color: "#222", 
     borderColor: "hsla(13, 98%, 49%, 0.2)"
   });
   const intervalRef = useRef(null);
-  const prevIntervalRef = usePrevious(intervalRef.current);
 
   const clear = () => {
     console.log('CLEAR')
@@ -54,26 +45,15 @@ function App() {
   const handleSeshLength = (e) => {
     console.log('handleSeshLength')
     setTimer(e.currentTarget.value * 60)
-    /**
-    lengthControl(
-      "seshLength",
-      e.currentTarget.value,
-      seshLength,
-      "Break"
-    ); */
   }
-
-
-
 
   const timerControl = () => {
     console.log('timerControl')
     if (timerState === "stopped") {
-      beginCountDown();
       setTimerState("running")
       setAlarmColor({
-        color: "#222",
-        borderColor: "hsla(13, 98%, 49%, 1)"
+        color: "#141",
+        borderColor: "hsla(120, 98%, 49%, 1)"
       })
     } else {
       intervalRef.current && clear(intervalRef.current);
@@ -89,9 +69,7 @@ function App() {
     decrementTimer();
     phaseControl();
   }
-  const beginCountDown = () => {
-    console.log('beginCountDown')
-  }
+
   const decrementTimer = () => {
 
     if (timerType === "Session") {
@@ -104,17 +82,14 @@ function App() {
   }
   const phaseControl = () => {
     let _t = timer;
-    if (_t < 0) {
+    if (_t <= 0) {
       console.log(`TEST phaseControl`)
-
       if (timerType === "Session") {
         intervalRef.current && clear(intervalRef.current);
-        beginCountDown();
         switchTimer(0, "Break");
         warning(_t)
       } else {
         intervalRef.current && clear(intervalRef.current);
-        beginCountDown();
         switchTimer(seshLength * 60, "Session")
       };
     }
@@ -192,8 +167,7 @@ function App() {
         onKeyUp
       }
     /> <div className="timer"
-      style={
-        alarmColor
+      style={alarmColor
       } >
       <div className="timer-wrapper" >
         <div id="timer-label" > {
