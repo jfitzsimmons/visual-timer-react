@@ -1,9 +1,5 @@
-/* eslint-disable no-unused-expressions */
-/* eslint-disable no-undef */
-
-import React, { Component } from "react";
-//import logo from './logo.svg';
-import "./App.scss";
+import React, {Component} from 'react';
+import './App.scss';
 
 export class TimerLengthControl extends Component {
   render() {
@@ -17,8 +13,7 @@ export class TimerLengthControl extends Component {
             className="btn-level"
             defaultValue={this.props.length}
             onChange={this.props.onClick}
-            onKeyPress={this.props.clickEnter}
-          ></input>
+            onKeyPress={this.props.clickEnter}></input>
           <span></span>
         </div>
       </div>
