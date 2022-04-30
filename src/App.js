@@ -5,12 +5,10 @@ import {TimerLengthControl} from './Control.js';
 function useInterval(callback, delay) {
   const savedCallback = useRef();
 
-  // Remember the latest callback.
   useEffect(() => {
     savedCallback.current = callback;
   }, [callback]);
 
-  // Set up the interval.
   useEffect(() => {
     function tick() {
       savedCallback.current();
@@ -23,7 +21,7 @@ function useInterval(callback, delay) {
 }
 
 function App() {
-  const seshLength = 10;
+  const [seshLength, setSeshLength] = useState(0.25);
   const [timerState, setTimerState] = useState('stopped');
   const [timerType, setTimerType] = useState('Session');
   const [timer, setTimer] = useState(600);
@@ -34,17 +32,15 @@ function App() {
   const intervalRef = useRef(null);
 
   const clear = () => {
-    console.log('CLEAR');
     clearInterval(intervalRef.current);
   };
 
   const handleSeshLength = e => {
-    console.log('handleSeshLength');
+    setSeshLength(e.currentTarget.value);
     setTimer(e.currentTarget.value * 60);
   };
 
   const timerControl = () => {
-    console.log('timerControl');
     if (timerState === 'stopped') {
       setTimerState('running');
       setAlarmColor({
@@ -60,91 +56,76 @@ function App() {
       });
     }
   };
+
   const accurateInterval = () => {
-    console.log('accurateInterval');
     decrementTimer();
     phaseControl();
   };
 
   const decrementTimer = () => {
-    if (timerType === 'Session') {
-      console.log(`decrementTimer TIMER: ${timer}`);
-      setTimer(timer - 1);
-    } else {
-      console.log(`increment TIMERTYPR: ${timerType}`);
-      setTimer(timer + 1);
-    }
+    timerType === 'Session' ? setTimer(timer - 1) : setTimer(timer + 1);
   };
+
   const phaseControl = () => {
     let _t = timer;
     if (_t <= 0) {
-      console.log(`TEST phaseControl`);
       if (timerType === 'Session') {
         intervalRef.current && clear(intervalRef.current);
-        switchTimer(0, 'Break');
-        warning(_t);
+        switchTimer(1, 'Break');
+        setAlarmColor({
+          color: '#a50d0d',
+          borderColor: '#a50d0d',
+        });
       } else {
         intervalRef.current && clear(intervalRef.current);
         switchTimer(seshLength * 60, 'Session');
       }
     }
   };
-  const warning = _timer => {
-    _timer < 61
-      ? setAlarmColor({
-          color: '#a50d0d',
-          borderColor: '#a50d0d',
-        })
-      : setAlarmColor({
-          color: '#222',
-          borderColor: '#222',
-        });
-  };
+
   const switchTimer = (num, str) => {
-    setTimer(num);
     setTimerType(str);
+    setTimer(num);
     setAlarmColor({
       color: '#222',
       borderColor: '#222',
     });
   };
+
   const clockify = () => {
-    console.log(`clockify TIMER: ${timer}`);
     let minutes = Math.floor(timer / 60);
     let seconds = timer - minutes * 60;
     seconds = seconds < 10 ? '0' + seconds : seconds;
     minutes = minutes < 10 ? '0' + minutes : minutes;
     return minutes + ':' + seconds;
   };
+
   const onKeyUp = e => {
     if (e.charCode === 13) {
-      console.log('onKeyUp inside ENTER');
       reset();
-      console.log(`1 timerState: ${timerState}`);
       timerControl();
-
-      console.log(`2 timerState: ${timerState}`);
     }
   };
+
   const reset = () => {
     let currentSeshLength = seshLength;
-    console.log(`currentSeshLength * 60 - RESet: ${currentSeshLength}`);
     setTimerState('stopped');
     setTimerType('Session');
     setTimer(currentSeshLength * 60);
     setAlarmColor({
       color: '#222',
-      borderColor: '#222',
+      borderColor: 'hsla(13, 98%, 49%, .2)',
     });
     intervalRef.current && clear(intervalRef.current);
   };
+
   useInterval(
     () => {
       accurateInterval();
     },
-    timerState === 'running' ? 1000 : null,
-    // passing null stops the interval
+    timerState === 'running' ? 1000 : null
   );
+
   return (
     <div>
       <TimerLengthControl
