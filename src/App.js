@@ -1,6 +1,6 @@
-import React, {useState, useEffect, useRef} from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./App.scss";
-import {TimerLengthControl} from "./Control.js";
+import { TimerLengthControl } from "./Control.js";
 
 function useInterval(callback, delay) {
   const savedCallback = useRef();
@@ -35,7 +35,7 @@ function App() {
     clearInterval(intervalRef.current);
   };
 
-  const handleSeshLength = e => {
+  const handleSeshLength = (e) => {
     setSeshLength(e.currentTarget.value);
     setTimer(e.currentTarget.value * 60);
   };
@@ -100,7 +100,7 @@ function App() {
     return minutes + ":" + seconds;
   };
 
-  const onKeyUp = e => {
+  const onKeyUp = (e) => {
     if (e.charCode === 13) {
       reset();
       timerControl();
