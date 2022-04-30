@@ -21,10 +21,10 @@ function useInterval(callback, delay) {
 }
 
 function App() {
-  const [seshLength, setSeshLength] = useState(0.25);
+  const [seshLength, setSeshLength] = useState(120);
   const [timerState, setTimerState] = useState('stopped');
   const [timerType, setTimerType] = useState('Session');
-  const [timer, setTimer] = useState(600);
+  const [timer, setTimer] = useState(7200);
   const [alarmColor, setAlarmColor] = useState({
     color: '#222',
     borderColor: 'hsla(13, 98%, 49%, 0.2)',
