@@ -1,7 +1,16 @@
 @font-face {
   font-family: "Digital";
   src: url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.eot");
-  src: url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.eot?#iefix") format("embedded-opentype"), url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.woff2") format("woff2"), url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.woff") format("woff"), url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.ttf") format("truetype"), url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.svg#Digital-7") format("svg");
+  src: url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.eot?#iefix")
+      format("embedded-opentype"),
+    url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.woff2")
+      format("woff2"),
+    url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.woff")
+      format("woff"),
+    url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.ttf")
+      format("truetype"),
+    url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.svg#Digital-7")
+      format("svg");
 }
 
 body {
@@ -10,7 +19,7 @@ body {
   color: #222;
   font-size: 30px;
   text-align: center;
-  font-family: 'Righteous';
+  font-family: "Righteous";
   #container {
     display: flex;
     height: 100vh;
@@ -30,7 +39,7 @@ body {
     div {
       position: relative;
     }
-    
+
     input {
       width: 6.5em;
       color: #222;
@@ -41,15 +50,15 @@ body {
       border-bottom-color: hsla(13, 98%, 49%, 0.2);
       text-align: center;
     }
-    
+
     input:focus {
       outline: none;
     }
-    
+
     input::placeholder {
       color: hsla(13, 98%, 49%, 0.6);
     }
-    
+
     span {
       position: absolute;
       bottom: 0;
@@ -57,12 +66,12 @@ body {
       width: 100%;
       height: 1px;
       opacity: 0;
-      background-color: #F53803;
+      background-color: #f53803;
       transform-origin: center;
       transform: translate(-50%, 0) scaleX(0);
       transition: all 0.3s ease;
     }
-    
+
     input:focus ~ span {
       transform: translate(-50%, 0) scaleX(1);
       opacity: 1;
