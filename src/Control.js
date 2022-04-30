@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import './App.scss';
+import React, {Component} from "react";
+import "./App.scss";
 
 export class TimerLengthControl extends Component {
   render() {
