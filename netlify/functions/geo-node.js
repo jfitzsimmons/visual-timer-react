@@ -7,21 +7,27 @@
  *  Where to store JSON?
  *
  */
-
+/** 
 const sdk = require("api")("@climacell-docs/v4#bzqumkyn13ppf");
-
-sdk.auth(process.env.TOMORROWIO_SECRET);
-sdk["get-timelines"]({
-  location: process.env.TOMORROWIO_lOCATION_ID,
-  fields:
-    "temperature&fields=temperatureApparent&fields=humidity&fields=windSpeed&fields=precipitationProbability&fields=cloudCover&fields=weatherCodeDay&fields=weatherCodeNight",
-  units: "metric",
-  timesteps: "1h&timesteps=1d",
-  "Accept-Encoding": "gzip",
-})
-  .then((res) => console.log(res))
-  .catch((err) => console.error(err));
-
+exports.handler = async function (event, context, callback) {
+  sdk.auth(process.env.TOMORROWIO_SECRET);
+  sdk["get-timelines"]({
+    location: process.env.TOMORROWIO_lOCATION_ID,
+    fields:
+      "temperature&fields=temperatureApparent&fields=humidity&fields=windSpeed&fields=precipitationProbability&fields=cloudCover&fields=weatherCodeDay&fields=weatherCodeNight",
+    units: "metric",
+    timesteps: "1h&timesteps=1d",
+    "Accept-Encoding": "gzip",
+  })
+    .then(function (body) {
+      callback(null, {
+        statusCode: 200,
+        body,
+      });
+    })
+    .catch((err) => console.error(err));
+};
+*/
 /** 
 
 const fs = require('fs');
@@ -36,27 +42,30 @@ fs.writeFile(fileName, JSON.stringify(file), function writeJSON(err) {
   console.log('writing to ' + fileName);
 });
 
-
-
-
+*/
 
 const fetch = require("node-fetch");
-const queryString = require('query-string');
+const queryString = require("query-string");
 const moment = require("moment");
 
 // set the Timelines GET endpoint as the target URL
 const getTimelineURL = "https://api.tomorrow.io/v4/timelines";
 
 // get your key from app.tomorrow.io/development/keys
-const apikey = "add your API key here";
+const apikey = process.env.TOMORROWIO_SECRET;
 
 // pick the location, as a latlong pair
-let location = [40.758, -73.9855];
+//TESTJPF LOWERCASE l: !!!!!
+//in location
+let location = process.env.TOMORROWIO_LOCATION_ID;
 
 // list the fields
 const fields = [
   "precipitationIntensity",
   "precipitationType",
+  "precipitationProbability",
+  "weatherCodeDay",
+  "weatherCodeNight",
   "windSpeed",
   "windGust",
   "windDirection",
@@ -66,6 +75,7 @@ const fields = [
   "cloudBase",
   "cloudCeiling",
   "weatherCode",
+  "humidity",
 ];
 
 // choose the unit system, either metric or imperial
@@ -80,10 +90,11 @@ const startTime = moment.utc(now).add(0, "minutes").toISOString();
 const endTime = moment.utc(now).add(1, "days").toISOString();
 
 // specify the timezone, using standard IANA timezone format
-const timezone = "America/New_York";
+const timezone = "America/Chicago";
 
 // request the timelines with all the query string parameters as options
-const getTimelineParameters =  queryString.stringify({
+const getTimelineParameters = queryString.stringify(
+  {
     apikey,
     location,
     fields,
@@ -92,14 +103,21 @@ const getTimelineParameters =  queryString.stringify({
     startTime,
     endTime,
     timezone,
-}, {arrayFormat: "comma"});
-
-fetch(getTimelineURL + "?" + getTimelineParameters, {method: "GET", compress: true})
-  .then((result) => result.json())
-  .then((json) => console.log(json)
-  .catch((error) => console.error("error: " + err));
-*/
-
+  },
+  { arrayFormat: "comma" }
+);
+/** TESTJPF
+ * gettting a RESPONSE!!!!!
+ */
+exports.handler = async function (event, context, callback) {
+  fetch(getTimelineURL + "?" + getTimelineParameters, {
+    method: "GET",
+    compress: true,
+  })
+    .then((result) => result.json())
+    .then((json) => console.log(json.data))
+    .catch((err) => console.error("error: " + err));
+};
 /*
 
 ---- [PREMIUM FEATURE] contact sales@tomorrow.io ----
