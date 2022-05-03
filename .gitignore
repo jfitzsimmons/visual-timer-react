@@ -20,11 +20,12 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# vars
 .env
 
 .vscode
 
 /notes
-# Local Netlify folder
+
 .netlify
+
+cors.json

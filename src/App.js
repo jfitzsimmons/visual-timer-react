@@ -33,6 +33,7 @@ function App() {
     borderColor: "hsla(13, 98%, 49%, 0.2)",
   });
   const intervalRef = useRef(null);
+  const fbdburl = process.env.REACT_APP_FIREBASE_DATABASE_URL;
 
   const clear = () => {
     clearInterval(intervalRef.current);
@@ -130,13 +131,31 @@ function App() {
   );
 
   useEffect(() => {
-    getDownloadURL(ref(fireStorage, "weatherdata.json"))
-      .then(function (url) {
-        console.log(url);
-      })
-      .catch(function (error) {
-        console.log("error encountered");
-      });
+    (async () => {
+      /** 
+      let weathJsonURL = await getDownloadURL(
+        ref(fireStorage, "weatherdata.json")
+      )
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("HTTP error " + response.status);
+          }
+          return response.json();
+        })
+        .catch(function (error) {
+          console.log("error encountered");
+          console.error(error.message);
+        });
+        */
+      console.log(fbdburl);
+      const response = await fetch(fbdburl + "/timelines.json").then((res) =>
+        res.json()
+      );
+      console.log(JSON.stringify(await response));
+    })();
+
+    // const response = fetch(weathJsonURL).then((response) => response.json());
+    // console.log(JSON.stringify(response));
 
     /** 
      * TEST JPF 
