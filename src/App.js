@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import "./App.scss";
 import { TimerLengthControl } from "./Control.js";
 
@@ -125,6 +125,16 @@ function App() {
     },
     timerState === "running" ? 1000 : null
   );
+
+  useEffect(() => {
+    console.log("mounted");
+
+    fetch("/.netlify/functions/geo-node")
+      .then((res) => res.json())
+      .then((response) => response.json())
+      .then((result) => console.log(result)) //.results
+      .catch((err) => console.log("Error in api.get: ", err));
+  }, []);
 
   return (
     <div>
