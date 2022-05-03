@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { fireStorage } from "./config/firebase-config";
-import { ref, getDownloadURL } from "firebase/storage";
-
+// import { fireStorage } from "./config/firebase-config";
+// import { ref, getDownloadURL } from "firebase/storage";
 import "./App.scss";
 import { TimerLengthControl } from "./Control.js";
+
+const fbdburl = process.env.REACT_APP_FIREBASE_DATABASE_URL;
 
 function useInterval(callback, delay) {
   const savedCallback = useRef();
@@ -130,13 +131,31 @@ function App() {
   );
 
   useEffect(() => {
-    getDownloadURL(ref(fireStorage, "weatherdata.json"))
-      .then(function (url) {
-        console.log(url);
-      })
-      .catch(function (error) {
-        console.log("error encountered");
-      });
+    (async () => {
+      /** 
+      let weathJsonURL = await getDownloadURL(
+        ref(fireStorage, "weatherdata.json")
+      )
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("HTTP error " + response.status);
+          }
+          return response.json();
+        })
+        .catch(function (error) {
+          console.log("error encountered");
+          console.error(error.message);
+        });
+        */
+      console.log(fbdburl);
+      const response = await fetch(fbdburl + "/timelines.json").then((res) =>
+        res.json()
+      );
+      console.log(JSON.stringify(await response));
+    })();
+
+    // const response = fetch(weathJsonURL).then((response) => response.json());
+    // console.log(JSON.stringify(response));
 
     /** 
      * TEST JPF 
