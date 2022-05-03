@@ -1,4 +1,7 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { fireStorage } from "./config/firebase-config";
+import { ref, getDownloadURL } from "firebase/storage";
+
 import "./App.scss";
 import { TimerLengthControl } from "./Control.js";
 
@@ -127,13 +130,26 @@ function App() {
   );
 
   useEffect(() => {
-    console.log("mounted");
+    getDownloadURL(ref(fireStorage, "weatherdata.json"))
+      .then(function (url) {
+        console.log(url);
+      })
+      .catch(function (error) {
+        console.log("error encountered");
+      });
 
-    fetch("/.netlify/functions/geo-node")
-      .then((res) => res.json())
-      .then((response) => response.json())
-      .then((result) => console.log(result)) //.results
-      .catch((err) => console.log("Error in api.get: ", err));
+    /** 
+     * TEST JPF 
+     * READY to GO
+     * commented out to save requests!!!!
+    console.log("mounted");
+    (async () => {
+      const response = await fetch("/.netlify/functions/geo-node").then(
+        (response) => response.json()
+      );
+      console.log(JSON.stringify(response));
+    })();
+*/
   }, []);
 
   return (

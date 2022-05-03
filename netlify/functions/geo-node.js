@@ -118,13 +118,13 @@ const getTimelineParameters = queryString.stringify(
 3 calls / per second
  */
 
-exports.handler = async function (event, context, callback) {
+exports.handler = function (event, context, callback) {
   const pass = (body) => {
     console.log("body");
     console.log(body);
     callback(null, {
       statusCode: 200,
-      body,
+      body: JSON.stringify(body),
     });
   };
   console.log(getTimelineURL + "?" + getTimelineParameters);
