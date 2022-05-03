@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { fireStorage } from "./config/firebase-config";
-import { ref, getDownloadURL } from "firebase/storage";
-
+// import { fireStorage } from "./config/firebase-config";
+// import { ref, getDownloadURL } from "firebase/storage";
 import "./App.scss";
 import { TimerLengthControl } from "./Control.js";
+
+const fbdburl = process.env.REACT_APP_FIREBASE_DATABASE_URL;
 
 function useInterval(callback, delay) {
   const savedCallback = useRef();
@@ -33,7 +34,6 @@ function App() {
     borderColor: "hsla(13, 98%, 49%, 0.2)",
   });
   const intervalRef = useRef(null);
-  const fbdburl = process.env.REACT_APP_FIREBASE_DATABASE_URL;
 
   const clear = () => {
     clearInterval(intervalRef.current);
