@@ -2,9 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 // import { fireStorage } from "./config/firebase-config";
 // import { ref, getDownloadURL } from "firebase/storage";
 import "./App.scss";
-import { TimerLengthControl } from "./Control.js";
+import { TimerLengthControl } from "./components/Control";
+import { Weather } from "./components/Weather";
 
-const fbdburl = process.env.REACT_APP_FIREBASE_DATABASE_URL;
+// const fbdburl = process.env.REACT_APP_FIREBASE_DATABASE_URL;
 
 function useInterval(callback, delay) {
   const savedCallback = useRef();
@@ -130,75 +131,37 @@ function App() {
     timerState === "running" ? 1000 : null
   );
 
-  useEffect(() => {
-    (async () => {
-      /** 
-      let weathJsonURL = await getDownloadURL(
-        ref(fireStorage, "weatherdata.json")
-      )
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("HTTP error " + response.status);
-          }
-          return response.json();
-        })
-        .catch(function (error) {
-          console.log("error encountered");
-          console.error(error.message);
-        });
-        */
-      console.log(fbdburl);
-      const response = await fetch(fbdburl + "/timelines.json").then((res) =>
-        res.json()
-      );
-      console.log(JSON.stringify(await response));
-    })();
-
-    // const response = fetch(weathJsonURL).then((response) => response.json());
-    // console.log(JSON.stringify(response));
-
-    /** 
-     * TEST JPF 
-     * READY to GO
-     * commented out to save requests!!!!
-    console.log("mounted");
-    (async () => {
-      const response = await fetch("/.netlify/functions/geo-node").then(
-        (response) => response.json()
-      );
-      console.log(JSON.stringify(response));
-    })();
-*/
-  }, []);
-
   return (
-    <div>
-      <TimerLengthControl
-        titleID="session-label"
-        minID="session-decrement"
-        addID="session-increment"
-        lengthID="session-length"
-        title="Minutes"
-        onClick={handleSeshLength}
-        length={seshLength}
-        clickEnter={onKeyUp}
-      />{" "}
-      <div className="timer" style={alarmColor}>
-        <div className="timer-wrapper">
-          <div id="timer-label"> {timerType} </div>{" "}
-          <div id="time-left"> {clockify()} </div>{" "}
+    <>
+      <div class="timer_container">
+        <TimerLengthControl
+          titleID="session-label"
+          minID="session-decrement"
+          addID="session-increment"
+          lengthID="session-length"
+          title="Minutes"
+          onClick={handleSeshLength}
+          length={seshLength}
+          clickEnter={onKeyUp}
+        />{" "}
+        <div className="timer" style={alarmColor}>
+          <div className="timer-wrapper">
+            <div id="timer-label"> {timerType} </div>{" "}
+            <div id="time-left"> {clockify()} </div>{" "}
+          </div>{" "}
         </div>{" "}
-      </div>{" "}
-      <div className="timer-control">
-        <button id="start_stop" onClick={timerControl} onKeyPress={onKeyUp}>
-          <i className="fa fa-play fa-2x" />
-          <i className="fa fa-pause fa-2x" />
-        </button>{" "}
-        <button id="reset" onClick={reset}>
-          <i className="fas fa-redo fa-2x"> </i>{" "}
-        </button>{" "}
+        <div className="timer-control">
+          <button id="start_stop" onClick={timerControl} onKeyPress={onKeyUp}>
+            <i className="fa fa-play fa-2x" />
+            <i className="fa fa-pause fa-2x" />
+          </button>{" "}
+          <button id="reset" onClick={reset}>
+            <i className="fas fa-redo fa-2x"> </i>{" "}
+          </button>{" "}
+        </div>
       </div>
-    </div>
+      <Weather />
+    </>
   );
 }
 
