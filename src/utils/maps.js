@@ -218,3 +218,11 @@ export const weatherCodesNightMap = new Map([
   ["80021", "Mostly Cloudy and Thunderstorm"],
   ["80001", "Thunderstorm"],
 ]);
+
+export const precipitationTypeMap = new Map([
+  ["0", "N/A"],
+  ["1", "Rain"],
+  ["2", "Snow"],
+  ["3", "Freezing Rain"],
+  ["4", "Ice Pellets / Sleet"],
+]);

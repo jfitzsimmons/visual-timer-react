@@ -1,0 +1,18 @@
+.weather-container {
+  width: 100%;
+}
+
+.forecast {
+  display: flex;
+  justify-content: space-around;
+  max-width: 1300px;
+}
+
+.day-current {
+  display: flex;
+  flex-direction: column;
+}
+
+.day__date {
+  width: 100%;
+}
