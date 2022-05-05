@@ -93,43 +93,66 @@ export function Day(props) {
   return (
     <div className={`day ${props.cname}`}>
       <h5 className="day__date">{localDate(startTime)}</h5>
-      <div className="day__weather">
-        {weatherCodesMap.get(values.weatherCode.toString())}
-      </div>
-      {!!values.weatherCodeDay && (
-        <div className="day__weather__morning">
-          Morning: {weatherCodesDayMap.get(values.weatherCodeDay.toString())}
+      <div>
+        <div className="day__weather">
+          {weatherCodesMap.get(values.weatherCode.toString())}
         </div>
-      )}
-      {!!values.weatherCodeNight && (
-        <div className="day__weather__night">
-          Night: {weatherCodesNightMap.get(values.weatherCodeNight.toString())}
+        {!!values.weatherCodeDay && (
+          <div className="day__weather__morning">
+            Morning: {weatherCodesDayMap.get(values.weatherCodeDay.toString())}
+          </div>
+        )}
+        {!!values.weatherCodeNight && (
+          <div className="day__weather__night">
+            Night:{" "}
+            {weatherCodesNightMap.get(values.weatherCodeNight.toString())}
+          </div>
+        )}
+        <div className="day__temp">
+          Temp: {values.temperature}&#176; / ta: {values.temperatureApparent}
+          &#176;
         </div>
-      )}
-      <div className="day__temp">
-        Temp: {values.temperature}&#176; / ta: {values.temperatureApparent}
-        &#176;
+        <div className="day__humidity">humidity: {values.humidity}%</div>
+        {!!values.precipitationType && values.precipitationType !== 0 && (
+          <div className="day__precip">
+            {values.precipitationProbability}% chance of{" "}
+            {precipitationTypeMap.get(values.precipitationType.toString())}:{" "}
+            {values.precipitationIntensity}in/hr
+          </div>
+        )}
       </div>
-      <div className="day__humidity">humidity: {values.humidity}%</div>
-      {!!values.precipitationType && values.precipitationType !== 0 && (
-        <div className="day__precip">
-          {values.precipitationProbability}% chance of{" "}
-          {precipitationTypeMap.get(values.precipitationType.toString())}:{" "}
-          {values.precipitationIntensity}in/hr
+      <div>
+        <div className="day__cloud_cover">
+          Cloud Cover: {values.cloudCover}%
         </div>
-      )}
-      <div className="day__cloud_cover">Cloud Cover: {values.cloudCover}%</div>
-      <div className="day__cloud_distance">
-        Cloud Base: {values.cloudBase}mi | Ceiling: {values.cloudCeiling}mi
-      </div>
+        <div className="day__cloud_distance">
+          Cloud Base: {values.cloudBase}mi | Ceiling: {values.cloudCeiling}mi
+        </div>
 
-      <div className="day__wind">
-        wind: {values.windSpeed}mph (gust up to: {values.windGust}mph){" "}
-        {values.windDirection}
+        <div className="day__wind">
+          wind: {values.windSpeed}mph (gust up to: {values.windGust}mph){" "}
+          {values.windDirection}
+        </div>
       </div>
     </div>
   );
 }
+
+const cleanHourly = (allHours) => {
+  /**
+   * what i need to do is...
+   * copy the first 24 hours
+   * delte the remain of todat (startAdjustment!!)
+   *
+   */
+  let localArr = allHours;
+  const startAdjustment = 24 - localHour(allHours[0].startTime);
+  const first24Arr = localArr.slice(0, 24);
+  localArr.splice(0, startAdjustment);
+  localArr = chunk(localArr, 24);
+  localArr.unshift([...first24Arr]);
+  return localArr;
+};
 
 export function Weather() {
   const [current, setCurrent] = useState(null);
@@ -141,7 +164,7 @@ export function Weather() {
       if (timeline.timestep === "current") setCurrent((c) => timeline);
       if (timeline.timestep === "1d") setWeek((w) => timeline);
       if (timeline.timestep === "1h")
-        setHourly((t) => chunk(timeline.intervals, 24));
+        setHourly((t) => cleanHourly(timeline.intervals));
     });
   }, []);
 
@@ -158,11 +181,11 @@ export function Weather() {
           return response.json();
         })
         .catch(function (error) {
-          console.log("error encountered");
-          console.error(error.message);
+          // console.log("error encountered");
+          // console.error(error.message);
         });
         */
-      console.log(fbdburl);
+      // console.log(fbdburl);
       const response = await fetch(fbdburl + "/data/timelines.json").then(
         (res) => res.json()
       );
@@ -170,18 +193,18 @@ export function Weather() {
     })();
 
     // const response = fetch(weathJsonURL).then((response) => response.json());
-    // console.log(JSON.stringify(response));
+    // // console.log(JSON.stringify(response));
 
     /** 
      * TEST JPF 
      * READY to GO
      * commented out to save requests!!!!
-    console.log("mounted");
+    // console.log("mounted");
     (async () => {
       const response = await fetch("/.netlify/functions/geo-node").then(
         (response) => response.json()
       );
-      console.log(JSON.stringify(response));
+      // console.log(JSON.stringify(response));
     })();
 */
   }, [handleWeather]);
