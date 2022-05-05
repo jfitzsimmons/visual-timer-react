@@ -133,7 +133,7 @@ function App() {
 
   return (
     <>
-      <div class="timer_container">
+      <div className="timer_container">
         <TimerLengthControl
           titleID="session-label"
           minID="session-decrement"
