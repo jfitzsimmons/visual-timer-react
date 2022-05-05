@@ -1,4 +1,9 @@
 import React, { useState, useEffect, useCallback } from "react";
+import {
+  weatherCodesMap,
+  weatherCodesDayMap,
+  weatherCodesNightMap,
+} from "../utils/maps";
 // import { fireStorage } from "./config/firebase-config";
 // import { ref, getDownloadURL } from "firebase/storage";
 
@@ -59,9 +64,19 @@ export function Day(props) {
         temperature: {values.temperature}&#176; / ta:{" "}
         {values.temperatureApparent}&#176;
       </p>
-      <p>weatherCode: {values.weatherCode}</p>
-      <p>weatherCodeDay: {values.weatherCodeDay}</p>
-      <p>weatherCodeNight: {values.weatherCodeNight}</p>
+      <p>weatherCode: {weatherCodesMap.get(values.weatherCode.toString())}</p>
+      {values.weatherCodeDay && (
+        <p>
+          weatherCodeDay:{" "}
+          {weatherCodesDayMap.get(values.weatherCodeDay.toString())}
+        </p>
+      )}
+      {values.weatherCodeNight && (
+        <p>
+          weatherCodeNight:{" "}
+          {weatherCodesNightMap.get(values.weatherCodeNight.toString())}
+        </p>
+      )}
       <p>
         wind: {values.windSpeed}mph (gust up to: {values.windGust}mph){" "}
         {values.windDirection}
@@ -101,8 +116,8 @@ export function Weather() {
         });
         */
       console.log(fbdburl);
-      const response = await fetch(fbdburl + "/timelines.json").then((res) =>
-        res.json()
+      const response = await fetch(fbdburl + "/data/timelines.json").then(
+        (res) => res.json()
       );
       handleWeather(await response);
     })();

@@ -27,5 +27,6 @@ yarn-error.log*
 /notes
 
 .netlify
+netlify/functions/serviceAccount.json
 
 cors.json
