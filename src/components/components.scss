@@ -1,5 +1,6 @@
 .weather-container {
   width: 100%;
+  font-size: 16px;
 }
 
 .forecast {
@@ -10,9 +11,15 @@
 
 .day-current {
   display: flex;
-  flex-direction: column;
+  justify-content: space-around;
+  flex-wrap: wrap;
 }
 
 .day__date {
   width: 100%;
+}
+
+.hour {
+  padding: 10px;
+  margin: 10px;
 }
