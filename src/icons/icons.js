@@ -38,3 +38,65 @@ export const Temp = () => {
     </svg>
   );
 };
+
+export const Play = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="icon icon-tabler icon-tabler-player-play"
+      width="44"
+      height="44"
+      viewBox="0 0 24 24"
+      strokeWidth="1.5"
+      stroke="#000000"
+      fill="none"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M7 4v16l13 -8z" />
+    </svg>
+  );
+};
+
+export const Pause = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="icon icon-tabler icon-tabler-player-pause"
+      width="44"
+      height="44"
+      viewBox="0 0 24 24"
+      strokeWidth="1.5"
+      stroke="#000000"
+      fill="none"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <rect x="6" y="5" width="4" height="14" rx="1" />
+      <rect x="14" y="5" width="4" height="14" rx="1" />
+    </svg>
+  );
+};
+
+export const Reset = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="icon icon-tabler icon-tabler-player-skip-back"
+      width="44"
+      height="44"
+      viewBox="0 0 24 24"
+      strokeWidth="1.5"
+      stroke="#000000"
+      fill="none"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M20 5v14l-12 -7z" />
+      <line x1="4" y1="5" x2="4" y2="19" />
+    </svg>
+  );
+};

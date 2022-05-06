@@ -1,15 +1,15 @@
-$color-black: #222;
-$color-white: #ddd;
-$color-black-alpha: #0004;
+$color-black: #222e;
+$color-white: #fffe;
+$color-black-alpha: #0006;
 $color-white-alpha: #fff4;
 $color-gray-light: rgba($color-white, 0.15);
 $color-gray-dark: rgba($color-black, 0.15);
 $light-gradient: linear-gradient(315deg, #f9ea8f 0%, #aff1da 74%);
-$dark-gradient: linear-gradient(315deg, #081590 0%, #500e25 74%);
+$dark-gradient: linear-gradient(315deg, #060370 0%, #300c03 74%);
 $light-border: 1px solid #ddd5;
 $dark-border: 1px solid #2225;
-$dark-shadow: 5px 5px 10px 0px #2222;
-$light-shadow: 5px 5px 10px 0px #ddd2;
+$dark-shadow: 5px 6px 10px 0px #2221, -1px -1px 20px 0px #2221;
+$light-shadow: 5px 6px 10px 0px #ddd1, -1px -1px 20px 0px #ddd1;
 
 :root {
   --gradient-page-background: #{$light-gradient};
@@ -17,6 +17,7 @@ $light-shadow: 5px 5px 10px 0px #ddd2;
   --card-background: #{$color-white-alpha};
   --card-border: #{$light-border};
   --card-shadow: #{$dark-shadow};
+  --timer-border-color: #{$color-black-alpha};
 }
 
 body {
@@ -30,6 +31,7 @@ body {
   --card-background: #{$color-black-alpha};
   --card-border: #{$dark-border};
   --card-shadow: #{$light-shadow};
+  --timer-border-color: #{$color-white-alpha};
 }
 
 @font-face {
@@ -48,7 +50,7 @@ body {
 }
 
 body {
-  background-color: #f9ea8f;
+  background-color: #5598b9;
   font-size: 30px;
   font-family: "Righteous";
   #container {
@@ -56,10 +58,11 @@ body {
     justify-content: center;
     align-items: center;
     .timer_container {
-      background: hsla(255, 255, 255, 0.75);
+      background: var(--card-background);
       border-radius: 50px;
+      color: var(--color-text);
       padding: 15px;
-      border: 7px solid #222;
+      border: 7px solid var(--timer-border-color);
       min-width: 300px;
       max-width: 400px;
       text-align: center;
@@ -81,6 +84,7 @@ body {
       border: 1px solid transparent;
       border-bottom-color: hsla(13, 98%, 49%, 0.2);
       text-align: center;
+      color: var(--color-text);
     }
 
     input:focus {
@@ -88,7 +92,7 @@ body {
     }
 
     input::placeholder {
-      color: hsla(13, 98%, 49%, 0.6);
+      color: #a50d0d;
     }
 
     span {
@@ -146,6 +150,7 @@ body {
 h6 {
   margin-top: 0;
   font-size: 12px;
+  border-bottom: 1px solid #8888;
 }
 
 svg {
@@ -154,6 +159,9 @@ svg {
 
 .app {
   background-image: var(--gradient-page-background);
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   color: var(--color-text);
   display: flex;
   flex-direction: column;

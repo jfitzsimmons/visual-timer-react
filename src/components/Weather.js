@@ -73,11 +73,11 @@ export function Hourly(props) {
             <div className="hour__weather">
               {weatherCodesMap.get(hour.values.weatherCode.toString())}
             </div>
-            <div className="hour__temp">
+            <div className="hour__temp row-v-align">
               <Temp />: {hour.values.temperature}&#176;
               {/** hour.values.temperatureApparent **/}
             </div>
-            <div className="hour__prec_prob">
+            <div className="hour__prec_prob row-v-align">
               <Drop />: {hour.values.precipitationProbability}%
             </div>
           </div>
@@ -107,20 +107,20 @@ export function Day(props) {
             {weatherCodesNightMap.get(values.weatherCodeNight.toString())}
           </div>
         )}
-        <div className="day__temp">
+        <div className="day__temp row-v-align">
           <Temp />: {values.temperature}&#176; / ta:{" "}
           {/**values.temperatureApparent*/}
         </div>
         {!!values.precipitationType && values.precipitationType !== 0 && (
-          <div className="day__precip">
+          <div className="day__precip row-v-align">
             <Drop />: {values.precipitationProbability}% chance of{" "}
             {precipitationTypeMap.get(values.precipitationType.toString())}:{" "}
             {values.precipitationIntensity}in/hr
           </div>
         )}
-        <div className="day__humidity">{values.humidity}% humidity</div>
       </div>
       <div className="day__secondary">
+        <div className="day__humidity">{values.humidity}% humidity</div>
         <div className="day__cloud_cover">
           Cloud Cover: {values.cloudCover}%
         </div>
