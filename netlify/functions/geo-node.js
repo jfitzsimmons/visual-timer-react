@@ -9,7 +9,6 @@ if (!admin.apps.length) {
 }
 
 /**
- *Firebase projects support Google service accounts, which you can use to call Firebase server APIs from your app server or trusted environment. If you're developing code locally or deploying your application on-premises, you can use credentials obtained via this service account to authorize server requests.
  *   Test JPF
  *
  * You get 500 cals per day.
@@ -60,41 +59,29 @@ const getTimelineParameters = queryString.stringify(
   { arrayFormat: "comma" }
 );
 /** TESTJPF
- *
- * 
  * 500 calls / per day
 25 calls / per hour
 3 calls / per second
 CHANE READ RULES TO ONLY BE THIS APP
 Change write rules to only be admin
  */
-
-// Import Admin SDK
-
-//const { getDatabase } = require("firebase-admin/database");
-
-// Get a database reference to our blog
 const db = admin.database();
 const dbref = db.ref("data");
 const timelinesRef = dbref.child("timelines");
 
 exports.handler = function (event, context, callback) {
-  /*
-  const pass = (body) => {
-    callback(null, {
-      statusCode: 200,
-      body: JSON.stringify(body),
-    });
-  };
-  */
-  //  console.log(getTimelineURL + "?" + getTimelineParameters);
-  //timelinesRef.set([{ 1: "test" }]);
-
   fetch(getTimelineURL + "?" + getTimelineParameters, {
     method: "GET",
     compress: true,
   })
     .then((result) => result.json())
-    .then((json) => timelinesRef.set(json.data.timelines))
+    .then((json) => {
+      timelinesRef.set(json.data.timelines);
+      callback(null, {
+        statusCode: 200,
+        body: JSON.stringify(json.data.timelines),
+      });
+    })
+    // testJPF close conncetion after set?!?!?
     .catch((err) => console.error("error: " + err.message));
 };

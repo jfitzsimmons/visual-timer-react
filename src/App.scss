@@ -1,3 +1,37 @@
+$color-black: #222;
+$color-white: #ddd;
+$color-black-alpha: #0004;
+$color-white-alpha: #fff4;
+$color-gray-light: rgba($color-white, 0.15);
+$color-gray-dark: rgba($color-black, 0.15);
+$light-gradient: linear-gradient(315deg, #f9ea8f 0%, #aff1da 74%);
+$dark-gradient: linear-gradient(315deg, #081590 0%, #500e25 74%);
+$light-border: 1px solid #ddd5;
+$dark-border: 1px solid #2225;
+$dark-shadow: 5px 5px 10px 0px #2222;
+$light-shadow: 5px 5px 10px 0px #ddd2;
+
+:root {
+  --gradient-page-background: #{$light-gradient};
+  --color-text: #{$color-black};
+  --card-background: #{$color-white-alpha};
+  --card-border: #{$light-border};
+  --card-shadow: #{$dark-shadow};
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+.dark {
+  --gradient-page-background: #{$dark-gradient};
+  --color-text: #{$color-white};
+  --card-background: #{$color-black-alpha};
+  --card-border: #{$dark-border};
+  --card-shadow: #{$light-shadow};
+}
+
 @font-face {
   font-family: "Digital";
   src: url("//db.onlinewebfonts.com/t/8e22783d707ad140bffe18b2a3812529.eot");
@@ -15,10 +49,7 @@
 
 body {
   background-color: #f9ea8f;
-  background-image: linear-gradient(315deg, #f9ea8f 0%, #aff1da 74%);
-  color: #222;
   font-size: 30px;
-  text-align: center;
   font-family: "Righteous";
   #container {
     display: flex;
@@ -31,6 +62,7 @@ body {
       border: 7px solid #222;
       min-width: 300px;
       max-width: 400px;
+      text-align: center;
     }
     .main-title {
       font-size: 50px;
@@ -43,7 +75,6 @@ body {
 
     input {
       width: 6.5em;
-      color: #222;
       font-size: inherit;
       font-family: inherit;
       background-color: transparent;
@@ -84,7 +115,6 @@ body {
       background: none;
       outline: none;
       border: none;
-      color: #222;
       cursor: pointer;
     }
     .btn-level,
@@ -113,15 +143,39 @@ body {
   }
 }
 
-#app {
-  width: 100%;
+h6 {
+  margin-top: 0;
+  font-size: 12px;
+}
+
+svg {
+  stroke: var(--color-text);
+}
+
+.app {
+  background-image: var(--gradient-page-background);
+  color: var(--color-text);
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 20px;
 }
 
 .flex {
   display: flex;
   width: 100%;
   flex-wrap: wrap;
+  justify-content: center;
+}
+
+.card {
+  border: var(--card-border);
+  border-radius: 16px;
+  background: var(--card-background);
+  backdrop-filter: blur(2px) saturate(140%);
+  box-shadow: var(--card-shadow);
+}
+
+.full-w {
+  width: 100%;
 }

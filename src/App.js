@@ -132,7 +132,7 @@ function App() {
   );
 
   return (
-    <>
+    <div className="app dark">
       <div className="timer_container">
         <TimerLengthControl
           titleID="session-label"
@@ -161,7 +161,7 @@ function App() {
         </div>
       </div>
       <Weather />
-    </>
+    </div>
   );
 }
 

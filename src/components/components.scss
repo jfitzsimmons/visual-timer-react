@@ -1,25 +1,74 @@
 .weather-container {
   width: 100%;
   font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  max-width: 980px;
 }
 
 .forecast {
   display: flex;
   justify-content: space-around;
   max-width: 1300px;
+  flex-wrap: wrap;
 }
 
 .day-current {
   display: flex;
   justify-content: space-around;
   flex-wrap: wrap;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 16px 50% 16px 16px;
+  max-width: 800px;
+  div {
+    flex: 1;
+    min-width: 250px;
+  }
 }
 
 .day__date {
   width: 100%;
 }
 
+.day__primary {
+  font-size: 22px;
+}
+
+.day__secondary {
+  align-self: flex-end;
+  margin-top: 20px;
+}
+
+.day-forecast {
+  padding: 10px;
+  margin: 10px;
+  max-width: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
 .hour {
   padding: 10px;
   margin: 10px;
+  div {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.hour__weather {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.day__weather {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.icon {
+  width: 20px;
+  height: 20px;
 }
