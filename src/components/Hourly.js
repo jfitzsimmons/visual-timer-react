@@ -16,6 +16,11 @@ export function MoreHours(props) {
 export function Hourly(props) {
   const { day, showMore } = props;
   let _d = Array.from(day);
+  _d = _d.sort(function (x, y) {
+    var aDate = new Date(x.startTime);
+    var bDate = new Date(y.startTime);
+    return aDate.getTime() - bDate.getTime();
+  });
   if (!showMore) _d = _d.splice(0, 8);
   return (
     <>

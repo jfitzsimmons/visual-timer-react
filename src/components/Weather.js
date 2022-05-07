@@ -101,24 +101,15 @@ export function Day(props) {
 
 const cleanHourly = (allHours) => {
   let localArr = allHours;
-  const startAdjustment = 24 - parseInt(localHour(allHours[0].startTime));
+  const startAdjustment = 24 - parseInt(localHour(allHours[0].startTime, true));
   const first24Arr = localArr.slice(0, 24);
+
   localArr.splice(0, startAdjustment);
   localArr = chunk(localArr, 24);
   localArr.unshift([...first24Arr]);
   return localArr;
 };
-/** 
-function usePrevious(value) {
-  const ref = useRef();
 
-  useEffect(() => {
-    ref.current = value;
-  }, [value]);
-
-  return ref.current;
-}
-*/
 export function Weather() {
   const [current, setCurrent] = useState(null);
   const [hourly, setHourly] = useState({});
@@ -160,13 +151,21 @@ export function Weather() {
   }
 
   const getTimelines = useCallback(async () => {
-    (async () => {
-      const response = await fetch(fbdburl + "/data/timelines.json").then(
-        (res) => res.json()
-      );
-      handleWeather(await response);
-    })();
-  }, [handleWeather]);
+    let isMoreThan20 = null;
+    if (current) {
+      const dateNow = new Date();
+      const dateThen = new Date(current.startTime);
+      isMoreThan20 = dateNow.getTime() - dateThen.getTime() > 60 * 20 * 1000;
+    }
+
+    if (!current || isMoreThan20)
+      (async () => {
+        const response = await fetch(fbdburl + "/data/timelines.json").then(
+          (res) => res.json()
+        );
+        handleWeather(await response);
+      })();
+  }, [current, handleWeather]);
 
   useEffect(() => {
     getTimelines();
@@ -174,6 +173,7 @@ export function Weather() {
 
   useEffect(() => {
     if (current && current.startTime) {
+      //TEST JPF DRY morethan20
       const dateNow = new Date();
       let dateThen = new Date(current.startTime);
       var isMoreThan20 =
@@ -184,9 +184,7 @@ export function Weather() {
           const response = fetch("/.netlify/functions/geo-node");
           const result = await response;
           try {
-            result.statusCode === 200
-              ? getTimelines()
-              : console.log("ERROR TESTJPF");
+            result.statusCode === 200 && getTimelines();
           } catch {
             console.log("!!!ERROR2 TESTJPF");
           }
