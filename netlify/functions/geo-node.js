@@ -21,6 +21,7 @@ const moment = require("moment");
 const getTimelineURL = "https://api.tomorrow.io/v4/timelines";
 const apikey = process.env.TOMORROWIO_SECRET;
 let location = process.env.TOMORROWIO_LOCATION_ID;
+// get sunset and sunrise and oon ?!?!? TESTJPF
 const fields = [
   "precipitationIntensity",
   "precipitationType",
