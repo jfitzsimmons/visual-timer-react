@@ -1,0 +1,16 @@
+[build]
+  
+  publish = "build/"
+
+  # Default build command.
+  command = "yarn build'"
+[functions]
+
+  # Specifies `esbuild` for functions bundling
+  node_bundler = "esbuild"
+  
+  # Flags "package-1" as an external node module for all functions
+
+
+  # Includes all Markdown files inside the "files/" directory.
+  included_files = ["keys/*.json"]
