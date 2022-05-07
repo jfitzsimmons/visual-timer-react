@@ -8,20 +8,13 @@ if (!admin.apps.length) {
   });
 }
 
-/**
- *   Test JPF
- *
- * You get 500 cals per day.
- *
- */
-
 const fetch = require("node-fetch");
 const queryString = require("query-string");
 const moment = require("moment");
 const getTimelineURL = "https://api.tomorrow.io/v4/timelines";
 const apikey = process.env.TOMORROWIO_SECRET;
 let location = process.env.TOMORROWIO_LOCATION_ID;
-// get sunset and sunrise and oon ?!?!? TESTJPF
+// get sunset and sunrise and moon ?!?!? TESTJPF
 const fields = [
   "precipitationIntensity",
   "precipitationType",
@@ -60,11 +53,7 @@ const getTimelineParameters = queryString.stringify(
   { arrayFormat: "comma" }
 );
 /** TESTJPF
- * 500 calls / per day
-25 calls / per hour
-3 calls / per second
-CHANE READ RULES TO ONLY BE THIS APP
-Change write rules to only be admin
+CHANE READ RULES TO ONLY BE THIS APP/user
  */
 const db = admin.database();
 const dbref = db.ref("data");
@@ -83,6 +72,11 @@ exports.handler = function (event, context, callback) {
         body: JSON.stringify(json.data.timelines),
       });
     })
-    // testJPF close conncetion after set?!?!?
-    .catch((err) => console.error("error: " + err.message));
+    .catch((err) => {
+      console.error("error: " + err.message);
+      callback(null, {
+        statusCode: 500,
+        body: JSON.stringify(err.message),
+      });
+    });
 };
