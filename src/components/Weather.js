@@ -1,14 +1,14 @@
 import React, { useState, useEffect, useCallback } from "react";
+import { Hourly } from "./Hourly";
 import {
   weatherCodesMap,
   weatherCodesDayMap,
   weatherCodesNightMap,
   precipitationTypeMap,
 } from "../utils/maps";
+import { localHour, localDate } from "../utils/timing";
+import { Temp, Drop } from "../icons/icons";
 import "./components.scss";
-
-// import { fireStorage } from "./config/firebase-config";
-// import { ref, getDownloadURL } from "firebase/storage";
 
 const fbdburl = process.env.REACT_APP_FIREBASE_DATABASE_URL;
 
@@ -16,16 +16,6 @@ const chunk = (arr, size) =>
   Array.from({ length: Math.ceil(arr.length / size) }, (v, i) =>
     arr.slice(i * size, i * size + size)
   );
-
-const localDate = (startTime) => {
-  let date = new Date(startTime);
-  return date.toDateString();
-};
-
-const localHour = (startTime) => {
-  let date = new Date(startTime);
-  return date.getHours();
-};
 
 export function Current(props) {
   const { date } = props;
@@ -40,7 +30,7 @@ export function Today(props) {
   const { hours } = props;
   return (
     <div>
-      <h5>Later:</h5>
+      <h6>Later:</h6>
       {hours.map((h) => h.startTime && localDate(h.startTime))}
     </div>
   );
@@ -53,35 +43,7 @@ export function Forecast(props) {
       <h4>Forecast:</h4>
       <div className="forecast">
         {week.map((day, i) => (
-          <Day key={i} day={day} cname="day-forecast" />
-        ))}
-      </div>
-    </>
-  );
-}
-
-export function Hourly(props) {
-  const { day } = props;
-  return (
-    <>
-      <h4>Hourly:</h4>
-      <div className="flex hourly">
-        {day.map((hour, i) => (
-          /**destructure insid ehere TSTJPF!!! */
-          <div key={i} className="hour">
-            <h6>{localHour(hour.startTime)}</h6>
-            <div className="hour__weather">
-              {weatherCodesMap.get(hour.values.weatherCode.toString())}
-            </div>
-            <div className="hour__temp">
-              Temp: {hour.values.temperature}&#176; / ta:{" "}
-              {hour.values.temperatureApparent}
-              &#176;
-            </div>
-            <div className="hour__prec_prob">
-              rain chance: {hour.values.precipitationProbability}%
-            </div>
-          </div>
+          <Day id={`day_${i}`} key={i} day={day} cname="day-forecast" />
         ))}
       </div>
     </>
@@ -91,9 +53,9 @@ export function Hourly(props) {
 export function Day(props) {
   const { startTime, values } = props.day;
   return (
-    <div className={`day ${props.cname}`}>
-      <h5 className="day__date">{localDate(startTime)}</h5>
-      <div>
+    <div id={props.id} className={`day card ${props.cname}`}>
+      <h6 className="day__date no-events">{localDate(startTime)}</h6>
+      <div className="day__primary no-events">
         <div className="day__weather">
           {weatherCodesMap.get(values.weatherCode.toString())}
         </div>
@@ -108,29 +70,28 @@ export function Day(props) {
             {weatherCodesNightMap.get(values.weatherCodeNight.toString())}
           </div>
         )}
-        <div className="day__temp">
-          Temp: {values.temperature}&#176; / ta: {values.temperatureApparent}
-          &#176;
+        <div className="day__temp row-v-align">
+          <Temp />: {values.temperature}&#176; / ta:{" "}
+          {/**values.temperatureApparent*/}
         </div>
-        <div className="day__humidity">humidity: {values.humidity}%</div>
         {!!values.precipitationType && values.precipitationType !== 0 && (
-          <div className="day__precip">
-            {values.precipitationProbability}% chance of{" "}
+          <div className="day__precip row-v-align">
+            <Drop />: {values.precipitationProbability}% chance of{" "}
             {precipitationTypeMap.get(values.precipitationType.toString())}:{" "}
             {values.precipitationIntensity}in/hr
           </div>
         )}
       </div>
-      <div>
+      <div className="day__secondary no-events">
+        <div className="day__humidity">{values.humidity}% humidity</div>
         <div className="day__cloud_cover">
           Cloud Cover: {values.cloudCover}%
         </div>
         <div className="day__cloud_distance">
           Cloud Base: {values.cloudBase}mi | Ceiling: {values.cloudCeiling}mi
         </div>
-
         <div className="day__wind">
-          wind: {values.windSpeed}mph (gust up to: {values.windGust}mph){" "}
+          Wind: {values.windSpeed}mph (gust up to: {values.windGust}mph){" "}
           {values.windDirection}
         </div>
       </div>
@@ -139,25 +100,34 @@ export function Day(props) {
 }
 
 const cleanHourly = (allHours) => {
-  /**
-   * what i need to do is...
-   * copy the first 24 hours
-   * delte the remain of todat (startAdjustment!!)
-   *
-   */
   let localArr = allHours;
-  const startAdjustment = 24 - localHour(allHours[0].startTime);
+  const startAdjustment = 24 - parseInt(localHour(allHours[0].startTime));
   const first24Arr = localArr.slice(0, 24);
   localArr.splice(0, startAdjustment);
   localArr = chunk(localArr, 24);
   localArr.unshift([...first24Arr]);
   return localArr;
 };
+/** 
+function usePrevious(value) {
+  const ref = useRef();
 
+  useEffect(() => {
+    ref.current = value;
+  }, [value]);
+
+  return ref.current;
+}
+*/
 export function Weather() {
   const [current, setCurrent] = useState(null);
   const [hourly, setHourly] = useState({});
   const [week, setWeek] = useState({});
+  const [activeDay, setActiveDay] = useState(0);
+  const [showMore, setShowMore] = useState(false);
+
+  //const [activeHour, setActiveHour] = useState(0);
+  //const prevCurrent = usePrevious(current);
 
   const handleWeather = useCallback((timelines) => {
     timelines.forEach((timeline) => {
@@ -168,60 +138,71 @@ export function Weather() {
     });
   }, []);
 
-  useEffect(() => {
+  function handleAllClickEvents(event) {
+    event.preventDefault();
+    var target = event.target;
+    var targetId = target.id;
+
+    switch (targetId) {
+      case "day_0":
+      case "day_1":
+      case "day_2":
+      case "day_3":
+      case "day_4":
+        setActiveDay(parseInt(targetId.at(-1)));
+        break;
+      case "show_more":
+        showMore === true ? setShowMore(false) : setShowMore(true);
+        break;
+      default:
+        console.error("Target has no associated function.");
+    }
+  }
+
+  const getTimelines = useCallback(async () => {
     (async () => {
-      /** 
-      let weathJsonURL = await getDownloadURL(
-        ref(fireStorage, "weatherdata.json")
-      )
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("HTTP error " + response.status);
-          }
-          return response.json();
-        })
-        .catch(function (error) {
-          // console.log("error encountered");
-          // console.error(error.message);
-        });
-        */
-      // console.log(fbdburl);
       const response = await fetch(fbdburl + "/data/timelines.json").then(
         (res) => res.json()
       );
       handleWeather(await response);
     })();
-
-    // const response = fetch(weathJsonURL).then((response) => response.json());
-    // // console.log(JSON.stringify(response));
-
-    /** 
-     * TEST JPF 
-     * READY to GO
-     * commented out to save requests!!!!
-    // console.log("mounted");
-    (async () => {
-      const response = await fetch("/.netlify/functions/geo-node").then(
-        (response) => response.json()
-      );
-      // console.log(JSON.stringify(response));
-    })();
-*/
   }, [handleWeather]);
 
-  /**
-   *  forEach timeline,
-   *  if timestep = "1d"
-   *  component for current, day, week?
-   */
+  useEffect(() => {
+    getTimelines();
+  }, [getTimelines]);
+
+  useEffect(() => {
+    if (current && current.startTime) {
+      const dateNow = new Date();
+      let dateThen = new Date(current.startTime);
+      var isMoreThan20 =
+        dateNow.getTime() - dateThen.getTime() > 60 * 20 * 1000;
+
+      if (isMoreThan20)
+        (async function () {
+          const response = fetch("/.netlify/functions/geo-node");
+          const result = await response;
+          try {
+            result.statusCode === 200
+              ? getTimelines()
+              : console.log("ERROR TESTJPF");
+          } catch {
+            console.log("!!!ERROR2 TESTJPF");
+          }
+        })();
+    }
+  }, [current, getTimelines]);
+
   return (
     current && (
       <div className="weather-container">
         <h1>Currently:</h1>
         <Day day={current.intervals[0]} cname="day-current" />
-        <Hourly day={hourly[0]} />
-        {/**<Today hours={today.intervals} />*/}
-        <Forecast week={week.intervals} />
+        <div onClick={handleAllClickEvents}>
+          <Hourly day={hourly[activeDay]} showMore={showMore} />
+          <Forecast week={week.intervals} />
+        </div>
       </div>
     )
   );
