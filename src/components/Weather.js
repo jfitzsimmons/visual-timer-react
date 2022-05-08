@@ -172,14 +172,14 @@ export function Weather() {
   }, [getTimelines]);
 
   useEffect(() => {
+    let isMoreThan20 = null;
     if (current && current.startTime) {
       const dateNow = new Date();
       let dateThen = new Date(current.startTime);
-      var isMoreThan20 =
-        dateNow.getTime() - dateThen.getTime() > 60 * 20 * 1000;
+      isMoreThan20 = dateNow.getTime() - dateThen.getTime() > 60 * 20 * 1000;
 
-      if (isMoreThan20 === true)
-        (async function () {
+      if (isMoreThan20 && isMoreThan20 === true)
+        isMoreThan20 = false(async function () {
           const response = fetch("/.netlify/functions/geo-node");
           const result = await response;
           try {
