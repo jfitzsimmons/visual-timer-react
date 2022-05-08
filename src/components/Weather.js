@@ -120,7 +120,7 @@ export function Weather() {
   //const [activeHour, setActiveHour] = useState(0);
   //const prevCurrent = usePrevious(current);
 
-  const handleWeather = useCallback((timelines) => {
+  const handleTimelines = useCallback((timelines) => {
     timelines.forEach((timeline) => {
       if (timeline.timestep === "current") setCurrent((c) => timeline);
       if (timeline.timestep === "1d") setWeek((w) => timeline);
@@ -150,49 +150,49 @@ export function Weather() {
     }
   }
 
+  const setWeatherData = useCallback(async () => {
+    const response = fetch("/.netlify/functions/geo-node");
+    const result = await response;
+    try {
+      console.log("setweatherdata try");
+      console.log(result);
+      return result.status;
+    } catch {
+      console.log("!!!ERROR2 TESTJPF");
+    }
+  }, []);
+
+  const getWeatherData = useCallback(async () => {
+    const response = await fetch(fbdburl + "/data/timelines.json").then((res) =>
+      res.json()
+    );
+    return await response;
+  }, []);
+
   const getTimelines = useCallback(async () => {
-    let isMoreThan20 = null;
-    if (current) {
-      const dateNow = new Date();
-      const dateThen = new Date(current.startTime);
-      isMoreThan20 = dateNow.getTime() - dateThen.getTime() > 60 * 20 * 1000;
-    }
+    setWeatherData()
+      .then((status) => status === 200 && getWeatherData())
+      .then((response) => handleTimelines(response));
+  }, [getWeatherData, handleTimelines, setWeatherData]);
 
-    if (!current || isMoreThan20)
-      (async () => {
-        const response = await fetch(fbdburl + "/data/timelines.json").then(
-          (res) => res.json()
-        );
-        handleWeather(await response);
-      })();
-  }, [current, handleWeather]);
+  const checkStaleData = (date) => {
+    const dateNow = new Date();
+    const dateThen = new Date(date);
+    return dateNow.getTime() - dateThen.getTime() > 60 * 20 * 1000;
+  };
 
   useEffect(() => {
-    getTimelines();
-  }, [getTimelines]);
-  /**
-  useEffect(() => {
-    let isMoreThan20 = null;
-    if (current && current.startTime) {
-      const dateNow = new Date();
-      let dateThen = new Date(current.startTime);
-      isMoreThan20 = dateNow.getTime() - dateThen.getTime() > 60 * 20 * 1000;
+    getWeatherData()
+      .then((timelines) => {
+        return { timelines, stale: checkStaleData(timelines[2].startTime) };
+      })
+      .then((approved) =>
+        approved.stale === true
+          ? getTimelines()
+          : handleTimelines(approved.timelines)
+      );
+  }, [getTimelines, getWeatherData, handleTimelines]);
 
-      if (isMoreThan20 && isMoreThan20 === true) {
-        isMoreThan20 = false;
-        (async function () {
-          const response = fetch("/.netlify/functions/geo-node");
-          const result = await response;
-          try {
-            result.statusCode === 200 && getTimelines();
-          } catch {
-            console.log("!!!ERROR2 TESTJPF");
-          }
-        })();
-      }
-    }
-  }, [current, getTimelines]);
- */
   return (
     current && (
       <div className="weather-container">
