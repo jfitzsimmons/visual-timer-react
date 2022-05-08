@@ -170,7 +170,7 @@ export function Weather() {
   useEffect(() => {
     getTimelines();
   }, [getTimelines]);
-
+  /**
   useEffect(() => {
     let isMoreThan20 = null;
     if (current && current.startTime) {
@@ -192,7 +192,7 @@ export function Weather() {
       }
     }
   }, [current, getTimelines]);
-
+ */
   return (
     current && (
       <div className="weather-container">
