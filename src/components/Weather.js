@@ -192,7 +192,9 @@ export function Weather() {
           : handleTimelines(approved.timelines)
       );
   }, [getTimelines, getWeatherData, handleTimelines]);
-
+  /***TEST JPF
+   * MAKE A REFRESH WEATHER BUTTON
+   */
   return (
     current && (
       <div className="weather-container">
