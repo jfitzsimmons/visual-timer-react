@@ -173,13 +173,12 @@ export function Weather() {
 
   useEffect(() => {
     if (current && current.startTime) {
-      //TEST JPF DRY morethan20
       const dateNow = new Date();
       let dateThen = new Date(current.startTime);
       var isMoreThan20 =
         dateNow.getTime() - dateThen.getTime() > 60 * 20 * 1000;
 
-      if (isMoreThan20)
+      if (isMoreThan20 === true)
         (async function () {
           const response = fetch("/.netlify/functions/geo-node");
           const result = await response;
