@@ -1,10 +1,13 @@
-/**
- *
- *   Test JPF
- *
- * You get 500 cals per day.
- *
- */
+var admin = require("firebase-admin");
+
+const config = require("../keyConfig");
+const serviceAccount = config.FIREBASE_KEY;
+if (!admin.apps.length) {
+  admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
+  });
+}
 
 const fetch = require("node-fetch");
 const queryString = require("query-string");
@@ -12,6 +15,7 @@ const moment = require("moment");
 const getTimelineURL = "https://api.tomorrow.io/v4/timelines";
 const apikey = process.env.TOMORROWIO_SECRET;
 let location = process.env.TOMORROWIO_LOCATION_ID;
+// get sunset and sunrise and moon ?!?!? TESTJPF
 const fields = [
   "precipitationIntensity",
   "precipitationType",
@@ -50,28 +54,30 @@ const getTimelineParameters = queryString.stringify(
   { arrayFormat: "comma" }
 );
 /** TESTJPF
- *
- * 
- * 500 calls / per day
-25 calls / per hour
-3 calls / per second
+CHANE READ RULES TO ONLY BE THIS APP/user
  */
+const db = admin.database();
+const dbref = db.ref("data");
+const timelinesRef = dbref.child("timelines");
 
 exports.handler = function (event, context, callback) {
-  const pass = (body) => {
-    callback(null, {
-      statusCode: 200,
-      body: JSON.stringify(body),
-    });
-  };
-  //  console.log(getTimelineURL + "?" + getTimelineParameters);
   fetch(getTimelineURL + "?" + getTimelineParameters, {
     method: "GET",
     compress: true,
   })
     .then((result) => result.json())
     .then((json) => {
-      return pass(json.data);
+      timelinesRef.set(json.data.timelines);
+      callback(null, {
+        statusCode: 200,
+        body: JSON.stringify(json.data.timelines),
+      });
     })
-    .catch((err) => console.error("error: " + err.message));
+    .catch((err) => {
+      console.error("error: " + err.message);
+      callback(null, {
+        statusCode: 500,
+        body: JSON.stringify(err.message),
+      });
+    });
 };

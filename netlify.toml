@@ -1,0 +1,10 @@
+[build]
+  
+  publish = "build/"
+
+  # Default build command.
+  command = "yarn build"
+[functions]
+
+  # Specifies `esbuild` for functions bundling
+  node_bundler = "esbuild"
