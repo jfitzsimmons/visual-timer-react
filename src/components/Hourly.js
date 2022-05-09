@@ -35,7 +35,6 @@ export function Hourly(props) {
             </div>
             <div className="hour__temp row-v-align">
               <Temp />: {hour.values.temperature}&#176;
-              {/** hour.values.temperatureApparent **/}
             </div>
             <div className="hour__prec_prob row-v-align">
               <Drop />: {hour.values.precipitationProbability}%

@@ -8,3 +8,6 @@
 
   # Specifies `esbuild` for functions bundling
   node_bundler = "esbuild"
+
+  directory = "serverless/functions/"
+  

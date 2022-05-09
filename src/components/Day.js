@@ -20,46 +20,55 @@ export function Day(props) {
           {weatherCodesMap.get(values.weatherCode.toString())}
         </div>
         {!!values.weatherCodeDay && (
-          <div className="day__weather__morning">
+          <div className="day__weather__morning text-2">
             Morning: {weatherCodesDayMap.get(values.weatherCodeDay.toString())}
           </div>
         )}
         {!!values.weatherCodeNight && (
-          <div className="day__weather__night">
+          <div className="day__weather__night text-2">
             Night:{" "}
             {weatherCodesNightMap.get(values.weatherCodeNight.toString())}
           </div>
         )}
         <div className="day__temp row-v-align">
-          <Temp />: {values.temperature}&#176; / ta:{" "}
-          {/**values.temperatureApparent*/}
+          <Temp />
+          <b>{values.temperature}&#176;</b>
         </div>
         {!!values.precipitationType && values.precipitationType !== 0 && (
           <div className="day__precip row-v-align">
-            <Drop />: {values.precipitationProbability}% chance of{" "}
-            {precipitationTypeMap.get(values.precipitationType.toString())}
+            <Drop />
+            <b>{values.precipitationProbability}% </b>{" "}
+            <sub>
+              chance of{" "}
+              {precipitationTypeMap.get(values.precipitationType.toString())}
+            </sub>
           </div>
         )}
       </div>
-      <div className="day__secondary no-events">
+      <ul className="day__secondary no-events text-2">
         {!!values.precipitationType && values.precipitationType !== 0 && (
-          <div className="day__precip">
-            {precipitationTypeMap.get(values.precipitationType.toString())}:{" "}
+          <li className="day__precip">
+            <b>
+              {precipitationTypeMap.get(values.precipitationType.toString())}:
+            </b>{" "}
             {values.precipitationIntensity}in/hr
-          </div>
+          </li>
         )}
-        <div className="day__humidity">{values.humidity}% humidity</div>
-        <div className="day__cloud_cover">
-          Cloud Cover: {values.cloudCover}%
-        </div>
-        <div className="day__cloud_distance">
-          Cloud Base: {values.cloudBase}mi | Ceiling: {values.cloudCeiling}mi
-        </div>
-        <div className="day__wind">
-          Wind: {values.windSpeed}mph (gust up to: {values.windGust}mph){" "}
+        <li className="day__humidity">
+          {values.humidity}% <b>humidity</b>
+        </li>
+        <li className="day__cloud_cover">
+          <b>Cloud Cover:</b> {values.cloudCover}%
+        </li>
+        <li className="day__cloud_distance">
+          <b>Cloud Base:</b> {values.cloudBase}mi | <b>Ceiling:</b>{" "}
+          {values.cloudCeiling}mi
+        </li>
+        <li className="day__wind">
+          <b>Wind:</b> {values.windSpeed}mph (gust up to: {values.windGust}mph){" "}
           {values.windDirection}
-        </div>
-      </div>
+        </li>
+      </ul>
     </div>
   );
 }

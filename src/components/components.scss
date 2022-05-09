@@ -36,12 +36,14 @@
 }
 
 .day__primary {
-  font-size: 22px;
+  line-height: 19px;
 }
 
 .day__secondary {
   align-self: flex-end;
   margin-top: 20px;
+  line-height: 19px;
+  font-size: 0.94rem;
 }
 
 .day-forecast {
@@ -84,6 +86,10 @@
 .day__weather {
   font-weight: bold;
   margin-bottom: 10px;
+}
+
+.day__weather__night {
+  margin-bottom: 16px;
 }
 
 .icon {
