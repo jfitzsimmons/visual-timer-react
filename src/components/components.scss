@@ -60,6 +60,17 @@
   margin: 10px;
 }
 
+.show_more {
+  width: 100%;
+  text-align: center;
+  border-radius: 0 0 16px 16px;
+  border: 1px solid var(--timer-border-color);
+  border-top: 0;
+  padding: 16px;
+  box-shadow: var(--button-shadow);
+  color: var(--color-text);
+}
+
 .row-v-align {
   display: flex;
   align-items: center;
@@ -80,6 +91,29 @@
   height: 30px;
 }
 
-.show_more {
-  color: #fff;
+.refresh {
+  width: 40px;
+  height: 40px;
+  border: 1px solid var(--timer-border-color);
+  color: var(--timer-border-color);
+  border-radius: 16px;
+  margin-right: 16px;
+  transition: 0.4s;
+  svg {
+    stroke: var(--timer-border-color);
+  }
+}
+
+.refresh:hover {
+  border: 1px solid var(--color-text);
+  color: var(--color-text);
+  transition: 0.4s;
+  svg {
+    stroke: var(--color-text);
+  }
+}
+
+.weather-container_header {
+  display: flex;
+  align-items: center;
 }

@@ -142,7 +142,8 @@ function Timer() {
       </div>{" "}
       <div className="timer-control">
         <button id="start_stop" onClick={timerControl} onKeyPress={onKeyUp}>
-          <Play /> <Pause />
+          <Play />
+          <Pause />
         </button>{" "}
         <button id="reset" onClick={reset}>
           <Reset />

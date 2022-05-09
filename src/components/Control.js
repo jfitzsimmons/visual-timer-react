@@ -10,12 +10,12 @@ export class TimerLengthControl extends Component {
           <input
             id={this.props.minID}
             type="number"
-            className="btn-level"
+            className="btn-level minutes_input"
             defaultValue={this.props.length}
             onChange={this.props.onClick}
             onKeyPress={this.props.clickEnter}
           ></input>
-          <span></span>
+          <span className="fancy_span"></span>
         </div>
       </div>
     );
