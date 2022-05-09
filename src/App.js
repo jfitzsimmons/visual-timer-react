@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState } from "react";
 import "./App.scss";
 import { Weather } from "./components/Weather";
 import Timer from "./components/Timer";

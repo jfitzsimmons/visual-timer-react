@@ -35,24 +35,8 @@ const fields = [
 ];
 const units = "imperial";
 const timesteps = ["current", "1h", "1d"];
-const now = moment.utc();
-const startTime = moment.utc(now).add(0, "minutes").toISOString();
-const endTime = moment.utc(now).add(4, "days").toISOString();
 const timezone = "America/Chicago";
 
-const getTimelineParameters = queryString.stringify(
-  {
-    apikey,
-    location,
-    fields,
-    units,
-    timesteps,
-    startTime,
-    endTime,
-    timezone,
-  },
-  { arrayFormat: "comma" }
-);
 /** TESTJPF
 CHANE READ RULES TO ONLY BE THIS APP/user
  */
@@ -61,6 +45,22 @@ const dbref = db.ref("data");
 const timelinesRef = dbref.child("timelines");
 
 exports.handler = function (event, context, callback) {
+  const now = moment.utc();
+  const startTime = moment.utc(now).add(0, "minutes").toISOString();
+  const endTime = moment.utc(now).add(4, "days").toISOString();
+  const getTimelineParameters = queryString.stringify(
+    {
+      apikey,
+      location,
+      fields,
+      units,
+      timesteps,
+      startTime,
+      endTime,
+      timezone,
+    },
+    { arrayFormat: "comma" }
+  );
   fetch(getTimelineURL + "?" + getTimelineParameters, {
     method: "GET",
     compress: true,

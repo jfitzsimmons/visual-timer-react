@@ -37,12 +37,17 @@ export function Day(props) {
         {!!values.precipitationType && values.precipitationType !== 0 && (
           <div className="day__precip row-v-align">
             <Drop />: {values.precipitationProbability}% chance of{" "}
-            {precipitationTypeMap.get(values.precipitationType.toString())}:{" "}
-            {values.precipitationIntensity}in/hr
+            {precipitationTypeMap.get(values.precipitationType.toString())}
           </div>
         )}
       </div>
       <div className="day__secondary no-events">
+        {!!values.precipitationType && values.precipitationType !== 0 && (
+          <div className="day__precip">
+            {precipitationTypeMap.get(values.precipitationType.toString())}:{" "}
+            {values.precipitationIntensity}in/hr
+          </div>
+        )}
         <div className="day__humidity">{values.humidity}% humidity</div>
         <div className="day__cloud_cover">
           Cloud Cover: {values.cloudCover}%

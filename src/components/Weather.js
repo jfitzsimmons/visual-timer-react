@@ -54,16 +54,6 @@ export function Weather() {
   const [refreshWeather, setRefreshWeather] = useState(0);
 
   //const [activeHour, setActiveHour] = useState(0);
-  //const prevCurrent = usePrevious(current);
-
-  const handleTimelines = useCallback((timelines) => {
-    timelines.forEach((timeline) => {
-      if (timeline.timestep === "current") setCurrent((c) => timeline);
-      if (timeline.timestep === "1d") setWeek((w) => timeline);
-      if (timeline.timestep === "1h")
-        setHourly((t) => cleanHourly(timeline.intervals));
-    });
-  }, []);
 
   function handleAllClickEvents(event) {
     event.preventDefault();
@@ -86,6 +76,15 @@ export function Weather() {
     }
   }
 
+  const handleTimelines = useCallback((timelines) => {
+    timelines.forEach((timeline) => {
+      if (timeline.timestep === "current") setCurrent((c) => timeline);
+      if (timeline.timestep === "1d") setWeek((w) => timeline);
+      if (timeline.timestep === "1h")
+        setHourly((t) => cleanHourly(timeline.intervals));
+    });
+  }, []);
+
   const getTimelines = useCallback(async () => {
     setWeatherData()
       .then((status) => status === 200 && getWeatherData())
@@ -103,9 +102,7 @@ export function Weather() {
           : handleTimelines(approved.timelines)
       );
   }, [getTimelines, handleTimelines, refreshWeather]);
-  /***TEST JPF
-   * MAKE A REFRESH WEATHER BUTTON
-   */
+
   return (
     current && (
       <div className="weather-container">
@@ -116,7 +113,7 @@ export function Weather() {
           >
             <Refresh />
           </button>
-          <h1>Currently:</h1>
+          <h2>Currently:</h2>
         </div>
 
         <Day day={current.intervals[0]} cname="day-current" />
