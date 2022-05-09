@@ -12,10 +12,13 @@ $dark-shadow: 5px 6px 10px 0px #2221, -1px -1px 20px 0px #2221;
 $light-shadow: 5px 6px 10px 0px #ddd1, -1px -1px 20px 0px #ddd1;
 $dark-btm-shadow: 0 16px 20px 0 #0006;
 $light-btm-shadow: 0 16px 20px 0 #fff4;
+$color-lighter: #fefd;
+$color-darker: #120b;
 
 :root {
   --gradient-page-background: #{$light-gradient};
   --color-text: #{$color-black};
+  --lighter-color-text: #{$color-darker};
   --card-background: #{$color-white-alpha};
   --card-border: #{$light-border};
   --card-shadow: #{$dark-shadow};
@@ -23,14 +26,10 @@ $light-btm-shadow: 0 16px 20px 0 #fff4;
   --timer-border-color: #{$color-black-alpha};
 }
 
-body {
-  margin: 0;
-  padding: 0;
-}
-
 .dark {
   --gradient-page-background: #{$dark-gradient};
   --color-text: #{$color-white};
+  --lighter-color-text: #{$color-lighter};
   --card-background: #{$color-black-alpha};
   --card-border: #{$dark-border};
   --card-shadow: #{$light-shadow};
@@ -54,14 +53,15 @@ body {
 }
 
 body {
+  margin: 0;
+  padding: 0;
   background-color: #5598b9;
-  font-size: 30px;
-  font-family: "Righteous";
   #container {
     display: flex;
     justify-content: center;
     align-items: center;
     .timer_container {
+      font-size: 30px;
       background: var(--card-background);
       border-radius: 50px;
       color: var(--color-text);
@@ -150,7 +150,21 @@ body {
     }
   }
 }
-
+ul {
+  margin: 0;
+  margin-top: 0px;
+  padding-left: 15px;
+}
+li:not(:last-child) {
+  padding-bottom: 3px;
+}
+b {
+  color: var(--color-text);
+}
+h2,
+h4 {
+  margin-bottom: 8px;
+}
 h6 {
   margin-top: 0;
   font-size: 12px;
@@ -273,4 +287,8 @@ svg {
 
 .slider.round:before {
   border-radius: 50%;
+}
+
+.text-2 {
+  color: var(--lighter-color-text);
 }
