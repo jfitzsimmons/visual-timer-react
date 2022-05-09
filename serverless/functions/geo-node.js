@@ -26,7 +26,6 @@ const fields = [
   "windGust",
   "windDirection",
   "temperature",
-  "temperatureApparent",
   "cloudCover",
   "cloudBase",
   "cloudCeiling",

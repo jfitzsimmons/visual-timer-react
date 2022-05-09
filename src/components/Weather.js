@@ -72,7 +72,7 @@ export function Weather() {
         showMore === true ? setShowMore(false) : setShowMore(true);
         break;
       default:
-        console.error("Target has no associated function.");
+        console.warn("Target has no associated function.");
     }
   }
 
