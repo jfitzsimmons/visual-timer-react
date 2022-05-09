@@ -28,7 +28,7 @@ export function Hourly(props) {
       <div className="flex hourly">
         {_d.map((hour, i) => (
           /**destructure insid ehere TeSTJPF!!! */
-          <div key={i} className={`hour card ${i > 7 ? "more" : ""}`}>
+          <div key={`hour${i}`} className={`hour card ${i > 7 ? "more" : ""}`}>
             <h6>{localHour(hour.startTime)}</h6>
             <div className="hour__weather">
               {weatherCodesMap.get(hour.values.weatherCode.toString())}
@@ -43,7 +43,7 @@ export function Hourly(props) {
           </div>
         ))}
       </div>
-      <MoreHours showMore={showMore} />
+      {day.length > 8 && <MoreHours showMore={showMore} />}
     </>
   );
 }
