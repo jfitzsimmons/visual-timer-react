@@ -21,6 +21,7 @@ $color-darker: #120b;
   --lighter-color-text: #{$color-darker};
   --card-background: #{$color-white-alpha};
   --card-border: #{$light-border};
+  --active-border: #{$color-black-alpha};
   --card-shadow: #{$dark-shadow};
   --button-shadow: #{$light-btm-shadow};
   --timer-border-color: #{$color-black-alpha};
@@ -32,6 +33,7 @@ $color-darker: #120b;
   --lighter-color-text: #{$color-lighter};
   --card-background: #{$color-black-alpha};
   --card-border: #{$dark-border};
+  --active-border: #{$color-white-alpha};
   --card-shadow: #{$light-shadow};
   --button-shadow: #{$dark-btm-shadow};
   --timer-border-color: #{$color-white-alpha};
@@ -134,8 +136,8 @@ svg {
 }
 
 .active {
-  border: 1px solid #fff7;
-  box-shadow: 0px -5px 15px 0px #fff7;
+  border: 1px solid var(--active-border);
+  box-shadow: 0px -5px 15px 0px var(--active-border);
   transition: 0.7s;
 }
 

@@ -40,7 +40,7 @@ export function MoreData(props) {
 export function Hourly(props) {
   const [activeHour, setActiveHour] = useState(-1);
   const [showData, setShowData] = useState(false);
-  const { day, showMore } = props;
+  const { day, showMore, activeDay } = props;
   let _d = Array.from(day);
   _d = _d.sort(function (x, y) {
     var aDate = new Date(x.startTime);
@@ -100,7 +100,12 @@ export function Hourly(props) {
 
   return (
     <>
-      <h4>Hourly:</h4>
+      <h4>
+        Hourly:{" "}
+        {activeDay === 0
+          ? "Today"
+          : `${activeDay} ${activeDay > 1 ? "days" : "day"} from now`}
+      </h4>
       <div onClick={handleHourlyClickEvents}>
         <div className="flex hourly">
           {_d.map((hour, i) => (
