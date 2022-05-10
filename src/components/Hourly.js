@@ -99,35 +99,36 @@ export function Hourly(props) {
   }
 
   return (
-    <div onClick={handleHourlyClickEvents}>
+    <>
       <h4>Hourly:</h4>
-      <div className="flex hourly">
-        {_d.map((hour, i) => (
-          /**destructure insid ehere TeSTJPF!!! */
-
-          <div
-            key={`hour${i}`}
-            id={`hour_${i}`}
-            className={`hour card ${
-              activeHour === i && showData === true ? "active" : ""
-            }`}
-          >
-            <h6 className="no-events">{localHour(hour.startTime)}</h6>
-            <div className="hour__weather no-events">
-              {weatherCodesMap.get(hour.values.weatherCode.toString())}
+      <div onClick={handleHourlyClickEvents}>
+        <div className="flex hourly">
+          {_d.map((hour, i) => (
+            /**destructure insid ehere TeSTJPF!!! */
+            <div
+              key={`hour${i}`}
+              id={`hour_${i}`}
+              className={`hour card ${
+                activeHour === i && showData === true ? "active" : ""
+              }`}
+            >
+              <h6 className="no-events">{localHour(hour.startTime)}</h6>
+              <div className="hour__weather no-events">
+                {weatherCodesMap.get(hour.values.weatherCode.toString())}
+              </div>
+              <div className="hour__temp row-v-align no-events">
+                <Temp />: {hour.values.temperature}&#176;
+              </div>
+              <div className="hour__prec_prob row-v-align no-events">
+                <Drop />: {hour.values.precipitationProbability}%
+              </div>
+              {activeHour === i && showData === true && (
+                <MoreData secondaryData={hour.values} />
+              )}
             </div>
-            <div className="hour__temp row-v-align no-events">
-              <Temp />: {hour.values.temperature}&#176;
-            </div>
-            <div className="hour__prec_prob row-v-align no-events">
-              <Drop />: {hour.values.precipitationProbability}%
-            </div>
-            {activeHour === i && showData === true && (
-              <MoreData secondaryData={hour.values} />
-            )}
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 }
