@@ -21,7 +21,6 @@ export function MoreHours(props) {
 export function Forecast(props) {
   const { week } = props;
   const { active } = props;
-
   return (
     <>
       <h4>Forecast:</h4>
@@ -40,7 +39,7 @@ export function Forecast(props) {
 }
 
 const setWeatherData = async () => {
-  const response = fetch("/.netlify/functions/geo-node");
+  const response = fetch("/.netlify/functions/set-weather");
   const result = await response;
   try {
     return result.status;
@@ -124,7 +123,6 @@ export function Weather() {
           </button>
           <h2>Currently:</h2>
         </div>
-
         <Day day={current.intervals[0]} cname="day-current" />
         <Hourly day={hourly[activeDay]} showMore={showMore} />
         <div onClick={handleForecastClickEvents}>
