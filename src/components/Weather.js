@@ -107,10 +107,9 @@ export function Weather() {
         };
       })
       .then((approved) =>
-        approved.stale === true
-          ? getTimelines()
-          : handleTimelines(approved.timelines)
-      );
+        approved.stale === true ? true : handleTimelines(approved.timelines)
+      )
+      .then((stale) => stale === true && getTimelines());
   }, [getTimelines, handleTimelines, refreshWeather]);
 
   return (
