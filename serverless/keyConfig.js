@@ -9,6 +9,5 @@ module.exports = {
     auth_uri: process.env.FIREBASE_AUTH_URI,
     token_uri: process.env.FIREBASE_TOKEN_URI,
     auth_provider_x509_cert_url: process.env.FIREBASE_AUTH_CERT,
-    FIREBASE_CLIENT_CERT: process.env.REACT_APP_SAK_X509_CERT_URL,
   },
 };

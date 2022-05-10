@@ -5,12 +5,20 @@ import { cleanHourly, checkStaleData } from "../utils/timing";
 import "./components.scss";
 import { Refresh } from "../icons/icons";
 
-const fbdburl = process.env.REACT_APP_FIREBASE_DATABASE_URL;
+export function MoreHours(props) {
+  const { showMore } = props;
+  return (
+    <>
+      <button id="show_more" className="show_more">
+        {showMore === false ? "More \u2193" : "Less \u2191"}
+      </button>
+    </>
+  );
+}
 
 export function Forecast(props) {
   const { week } = props;
   const { active } = props;
-
   return (
     <>
       <h4>Forecast:</h4>
@@ -29,16 +37,17 @@ export function Forecast(props) {
 }
 
 const setWeatherData = async () => {
-  const response = fetch("/.netlify/functions/geo-node");
+  const response = fetch("/.netlify/functions/set-weather");
   const result = await response;
   try {
     return result.status;
-  } catch {
-    console.log("!!!ERROR2 TESTJPF");
+  } catch (err) {
+    console.error(err);
   }
 };
 
 const getWeatherData = async () => {
+  const fbdburl = process.env.REACT_APP_FIREBASE_DATABASE_URL;
   const response = await fetch(fbdburl + "/data/timelines.json").then((res) =>
     res.json()
   );
@@ -47,15 +56,13 @@ const getWeatherData = async () => {
 
 export function Weather() {
   const [current, setCurrent] = useState(null);
-  const [hourly, setHourly] = useState({});
-  const [week, setWeek] = useState({});
+  const [hourly, setHourly] = useState([]);
+  const [week, setWeek] = useState([]);
   const [activeDay, setActiveDay] = useState(0);
   const [showMore, setShowMore] = useState(false);
   const [refreshWeather, setRefreshWeather] = useState(0);
 
-  //const [activeHour, setActiveHour] = useState(0);
-
-  function handleAllClickEvents(event) {
+  function handleForecastClickEvents(event) {
     event.preventDefault();
     var target = event.target;
     var targetId = target.id;
@@ -85,7 +92,7 @@ export function Weather() {
     });
   }, []);
 
-  const getTimelines = useCallback(async () => {
+  const getTimelines = useCallback(() => {
     setWeatherData()
       .then((status) => status === 200 && getWeatherData())
       .then((response) => handleTimelines(response));
@@ -94,7 +101,10 @@ export function Weather() {
   useEffect(() => {
     getWeatherData()
       .then((timelines) => {
-        return { timelines, stale: checkStaleData(timelines[2].startTime) };
+        return {
+          timelines: timelines,
+          stale: checkStaleData(timelines[2].startTime),
+        };
       })
       .then((approved) =>
         approved.stale === true
@@ -115,10 +125,10 @@ export function Weather() {
           </button>
           <h2>Currently:</h2>
         </div>
-
         <Day day={current.intervals[0]} cname="day-current" />
-        <div onClick={handleAllClickEvents}>
-          <Hourly day={hourly[activeDay]} showMore={showMore} />
+        <Hourly day={hourly[activeDay]} showMore={showMore} />
+        <div onClick={handleForecastClickEvents}>
+          {hourly[activeDay].length > 8 && <MoreHours showMore={showMore} />}
           <Forecast week={week.intervals} active={activeDay} />
         </div>
       </div>

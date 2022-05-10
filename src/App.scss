@@ -8,10 +8,10 @@ $light-gradient: linear-gradient(315deg, #f9ea8f 0%, #aff1da 74%);
 $dark-gradient: linear-gradient(315deg, #060370 0%, #300c03 74%);
 $light-border: 1px solid #ddd5;
 $dark-border: 1px solid #2225;
-$dark-shadow: 5px 6px 10px 0px #2221, -1px -1px 20px 0px #2221;
-$light-shadow: 5px 6px 10px 0px #ddd1, -1px -1px 20px 0px #ddd1;
-$dark-btm-shadow: 0 16px 20px 0 #0006;
-$light-btm-shadow: 0 16px 20px 0 #fff4;
+$dark-shadow: 0 4px 6px 0 #1011;
+$light-shadow: 0 4px 6px 0 #fef1;
+$dark-btm-shadow: 0 8px 12px 0 #0006;
+$light-btm-shadow: 0 8px 12px 0 #fff4;
 $color-lighter: #fefd;
 $color-darker: #120b;
 
@@ -53,118 +53,40 @@ $color-darker: #120b;
 }
 
 body {
+  font-family: Frutiger, "Frutiger Linotype", Univers, Calibri, "Gill Sans",
+    "Gill Sans MT", "Myriad Pro", Myriad, "DejaVu Sans Condensed",
+    "Liberation Sans", "Nimbus Sans L", Tahoma, Geneva, "Helvetica Neue",
+    Helvetica, Arial, sans-serif;
   margin: 0;
   padding: 0;
   background-color: #5598b9;
-  #container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    .timer_container {
-      font-size: 30px;
-      background: var(--card-background);
-      border-radius: 50px;
-      color: var(--color-text);
-      padding: 15px;
-      border: 7px solid var(--timer-border-color);
-      min-width: 300px;
-      max-width: 400px;
-      text-align: center;
-      transition: 0.7s;
-    }
-    .main-title {
-      font-size: 50px;
-      margin-bottom: 20px;
-    }
-
-    div {
-      position: relative;
-    }
-
-    .minutes_input {
-      width: 6.5em;
-      font-size: inherit;
-      font-family: inherit;
-      background-color: transparent;
-      border: 1px solid transparent;
-      border-bottom-color: hsla(13, 98%, 49%, 0.2);
-      text-align: center;
-      color: var(--color-text);
-    }
-
-    .minutes_input:focus {
-      outline: none;
-    }
-
-    .minutes_input::placeholder {
-      color: #a50d0d;
-    }
-
-    .fancy_span {
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      width: 100%;
-      height: 1px;
-      opacity: 0;
-      background-color: #f53803;
-      transform-origin: center;
-      transform: translate(-50%, 0) scaleX(0);
-      transition: all 0.3s ease;
-    }
-
-    .minutes_input:focus ~ .fancy_span {
-      transform: translate(-50%, 0) scaleX(1);
-      opacity: 1;
-    }
-    .length-control {
-      width: 250px;
-    }
-    button {
-      background: none;
-      outline: none;
-      cursor: pointer;
-    }
-    .btn-level,
-    .length-control {
-      display: inline-block;
-      font-size: 25pt;
-      .btn-level:nth-child(3) {
-        width: 40px;
-      }
-    }
-    .timer {
-      border-width: 7px;
-      border-color: hsla(13, 98%, 49%, 0.2);
-      border-style: solid;
-      margin: 20px auto 10px auto;
-      border-radius: 50px;
-      padding: 15px 15px 0 15px;
-      #time-left {
-        font-family: digital;
-        font-size: 80px;
-      }
-      .timer-control button:active {
-        color: #13353a;
-      }
-    }
-  }
 }
+
+button {
+  background: none;
+  outline: none;
+  cursor: pointer;
+}
+
 ul {
   margin: 0;
   margin-top: 0px;
   padding-left: 15px;
 }
+
 li:not(:last-child) {
   padding-bottom: 3px;
 }
+
 b {
   color: var(--color-text);
 }
+
 h2,
 h4 {
   margin-bottom: 8px;
 }
+
 h6 {
   margin-top: 0;
   font-size: 12px;
@@ -212,8 +134,8 @@ svg {
 }
 
 .active {
-  border: 1px solid #fff8;
-  box-shadow: 0px -10px 20px 0px #fff8;
+  border: 1px solid #fff7;
+  box-shadow: 0px -5px 15px 0px #fff7;
   transition: 0.7s;
 }
 
@@ -226,7 +148,6 @@ svg {
   margin-bottom: 16px;
 }
 
-/* The switch - the box around the slider */
 .switch {
   position: relative;
   display: inline-block;
@@ -234,14 +155,12 @@ svg {
   height: 24px;
 }
 
-/* Hide default HTML checkbox */
 .switch .timer_input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-/* The slider */
 .slider {
   position: absolute;
   cursor: pointer;
@@ -280,7 +199,6 @@ svg {
   transform: translateX(26px);
 }
 
-/* Rounded sliders */
 .slider.round {
   border-radius: 34px;
 }
