@@ -5,8 +5,6 @@ import { cleanHourly, checkStaleData } from "../utils/timing";
 import "./components.scss";
 import { Refresh } from "../icons/icons";
 
-const fbdburl = process.env.REACT_APP_FIREBASE_DATABASE_URL;
-
 export function MoreHours(props) {
   const { showMore } = props;
   return (
@@ -49,6 +47,7 @@ const setWeatherData = async () => {
 };
 
 const getWeatherData = async () => {
+  const fbdburl = process.env.REACT_APP_FIREBASE_DATABASE_URL;
   const response = await fetch(fbdburl + "/data/timelines.json").then((res) =>
     res.json()
   );
@@ -102,7 +101,10 @@ export function Weather() {
   useEffect(() => {
     getWeatherData()
       .then((timelines) => {
-        return { timelines, stale: checkStaleData(timelines[2].startTime) };
+        return {
+          timelines: timelines,
+          stale: checkStaleData(timelines[2].startTime),
+        };
       })
       .then((approved) =>
         approved.stale === true
