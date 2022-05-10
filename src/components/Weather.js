@@ -107,10 +107,9 @@ export function Weather() {
         };
       })
       .then((approved) =>
-        approved.stale === true
-          ? getTimelines()
-          : handleTimelines(approved.timelines)
-      );
+        approved.stale === true ? true : handleTimelines(approved.timelines)
+      )
+      .then((stale) => stale === true && getTimelines());
   }, [getTimelines, handleTimelines, refreshWeather]);
 
   return (
@@ -126,7 +125,11 @@ export function Weather() {
           <h2>Currently:</h2>
         </div>
         <Day day={current.intervals[0]} cname="day-current" />
-        <Hourly day={hourly[activeDay]} showMore={showMore} />
+        <Hourly
+          day={hourly[activeDay]}
+          showMore={showMore}
+          activeDay={activeDay}
+        />
         <div onClick={handleForecastClickEvents}>
           {hourly[activeDay].length > 8 && <MoreHours showMore={showMore} />}
           <Forecast week={week.intervals} active={activeDay} />
