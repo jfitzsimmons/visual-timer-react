@@ -36,9 +36,6 @@ const units = "imperial";
 const timesteps = ["current", "1h", "1d"];
 const timezone = "America/Chicago";
 
-/** TESTJPF
-CHANE READ RULES TO ONLY BE THIS APP/user
- */
 const db = admin.database();
 const dbref = db.ref("data");
 const timelinesRef = dbref.child("timelines");
