@@ -64,9 +64,12 @@ exports.handler = function (event, context, callback) {
     .then((result) => result.json())
     .then((json) => {
       timelinesRef.set(json.data.timelines);
+      return json.data.timelines;
+    })
+    .then((timelines) => {
       callback(null, {
         statusCode: 200,
-        body: JSON.stringify(json.data.timelines),
+        body: JSON.stringify(timelines),
       });
     })
     .catch((err) => {

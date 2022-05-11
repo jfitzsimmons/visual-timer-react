@@ -24,7 +24,7 @@ yarn build
 yarn dev
 ```
 
-##Deploy
+## Deploy
 
 Push code to your own repo.
 
