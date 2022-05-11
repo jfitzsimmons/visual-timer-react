@@ -63,8 +63,13 @@ exports.handler = function (event, context, callback) {
   })
     .then((result) => result.json())
     .then((json) => {
-      timelinesRef.set(json.data.timelines);
-      return json.data.timelines;
+      timelinesRef.set(json.data.timelines, (error) => {
+        if (error) {
+          console.log("Data could not be saved." + error);
+        } else {
+          return json.data.timelines;
+        }
+      });
     })
     .then((timelines) => {
       callback(null, {
