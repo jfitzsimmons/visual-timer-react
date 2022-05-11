@@ -3,7 +3,7 @@ import { Hourly } from "./Hourly";
 import { Day } from "./Day";
 import { cleanHourly, checkStaleData } from "../utils/timing";
 import "./components.scss";
-import { Refresh } from "../icons/icons";
+import { Refresh, Loading } from "../icons/icons";
 
 export function MoreHours(props) {
   const { showMore } = props;
@@ -112,29 +112,34 @@ export function Weather() {
       .then((stale) => stale === true && getTimelines());
   }, [getTimelines, handleTimelines, refreshWeather]);
 
-  return (
-    current && (
-      <div className="weather-container">
-        <div className="weather-container_header">
-          <button
-            className="refresh"
-            onClick={() => setRefreshWeather(refreshWeather + 1)}
-          >
-            <Refresh />
-          </button>
-          <h2>Currently:</h2>
-        </div>
-        <Day day={current.intervals[0]} cname="day-current" />
-        <Hourly
-          day={hourly[activeDay]}
-          showMore={showMore}
-          activeDay={activeDay}
-        />
-        <div onClick={handleForecastClickEvents}>
-          {hourly[activeDay].length > 8 && <MoreHours showMore={showMore} />}
-          <Forecast week={week.intervals} active={activeDay} />
-        </div>
+  return current ? (
+    <div className="weather-container">
+      <div className="weather-container_header">
+        <button
+          className="refresh"
+          onClick={() => setRefreshWeather(refreshWeather + 1)}
+        >
+          <Refresh />
+        </button>
+        <h2>Currently:</h2>
       </div>
-    )
+      <Day day={current.intervals[0]} cname="day-current" />
+      <Hourly
+        day={hourly[activeDay]}
+        showMore={showMore}
+        activeDay={activeDay}
+      />
+      <div onClick={handleForecastClickEvents}>
+        {hourly[activeDay].length > 8 && <MoreHours showMore={showMore} />}
+        <Forecast week={week.intervals} active={activeDay} />
+      </div>
+    </div>
+  ) : (
+    <div className="loading">
+      <div className="loading__icon">
+        <Loading />
+      </div>
+      <div className="loading__text">loading...</div>
+    </div>
   );
 }
