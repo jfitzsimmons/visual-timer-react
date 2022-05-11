@@ -224,3 +224,87 @@
   display: flex;
   align-items: center;
 }
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes flickerAnimation {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.loading__text {
+  font-size: 3rem;
+  animation: flickerAnimation 2s infinite ease-in;
+  text-align: center;
+}
+
+.icon-loader {
+  width: 300px;
+  height: 300px;
+}
+
+.loading {
+  opacity: 0;
+  animation: fadeIn linear 0.7s;
+  animation-delay: 0.3s;
+  animation-fill-mode: forwards;
+}
+
+.line {
+  opacity: 0;
+  animation: flickerAnimation;
+  animation-iteration-count: infinite;
+}
+
+.line-1 {
+  animation-duration: 2s;
+}
+
+.line-2 {
+  animation-delay: 0.25s;
+  animation-duration: 2s;
+}
+
+.line-3 {
+  animation-delay: 0.5s;
+  animation-duration: 2s;
+}
+
+.line-4 {
+  animation-delay: 0.75s;
+  animation-duration: 2s;
+}
+
+.line-5 {
+  animation-delay: 1s;
+  animation-duration: 2s;
+}
+
+.line-6 {
+  animation-delay: 1.25s;
+  animation-duration: 2s;
+}
+
+.line-7 {
+  animation-delay: 1.5s;
+  animation-duration: 2s;
+}
+
+.line-8 {
+  animation-delay: 1.75s;
+  animation-duration: 2s;
+}

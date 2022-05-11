@@ -121,3 +121,30 @@ export const Refresh = () => {
     </svg>
   );
 };
+
+export const Loading = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className="icon-tabler icon-loader"
+      width="44"
+      height="44"
+      viewBox="0 0 24 24"
+      strokeWidth="1.5"
+      stroke="#000000"
+      fill="none"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <line className="line line-1" x1="12" y1="6" x2="12" y2="3" />
+      <line className="line line-2" x1="16.25" y1="7.75" x2="18.4" y2="5.6" />
+      <line className="line line-3" x1="18" y1="12" x2="21" y2="12" />
+      <line className="line line-4" x1="16.25" y1="16.25" x2="18.4" y2="18.4" />
+      <line className="line line-5" x1="12" y1="18" x2="12" y2="21" />
+      <line className="line line-6" x1="7.75" y1="16.25" x2="5.6" y2="18.4" />
+      <line className="line line-7" x1="6" y1="12" x2="3" y2="12" />
+      <line className="line line-8" x1="7.75" y1="7.75" x2="5.6" y2="5.6" />
+    </svg>
+  );
+};
