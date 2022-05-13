@@ -103,7 +103,7 @@ export function Weather() {
       .then((timelines) => {
         return {
           timelines: timelines,
-          stale: checkStaleData(timelines[2].startTime),
+          stale: timelines[2] ? checkStaleData(timelines[2].startTime) : true,
         };
       })
       .then((approved) =>
