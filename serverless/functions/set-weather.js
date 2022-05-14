@@ -2,12 +2,6 @@ var admin = require("firebase-admin");
 
 const config = require("../keyConfig");
 const serviceAccount = config.FIREBASE_KEY;
-if (!admin.apps.length) {
-  admin.initializeApp({
-    credential: admin.credential.cert(serviceAccount),
-    databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
-  });
-}
 
 const fetch = require("node-fetch");
 const queryString = require("query-string");
@@ -36,11 +30,17 @@ const units = "imperial";
 const timesteps = ["current", "1h", "1d"];
 const timezone = "America/Chicago";
 
-const db = admin.database();
-const dbref = db.ref("data");
-const timelinesRef = dbref.child("timelines");
-
 exports.handler = function (event, context, callback) {
+  if (!admin.apps.length) {
+    admin.initializeApp({
+      credential: admin.credential.cert(serviceAccount),
+      databaseURL: process.env.REACT_APP_FIREBASE_DATABASE_URL,
+    });
+  }
+
+  const db = admin.database();
+  const dbref = db.ref("data");
+  const timelinesRef = dbref.child("timelines");
   const now = moment.utc();
   const startTime = moment.utc(now).add(0, "minutes").toISOString();
   const endTime = moment.utc(now).add(4, "days").toISOString();
@@ -72,6 +72,7 @@ exports.handler = function (event, context, callback) {
       });
     })
     .then((timelines) => {
+      admin.app().delete();
       callback(null, {
         statusCode: 200,
         body: JSON.stringify(timelines),
