@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Hourly } from "./Hourly";
 import { Day } from "./Day";
 import { cleanHourly, checkStaleData } from "../utils/timing";
+import { usePrevious } from "../utils/helpers";
 import "./components.scss";
 import { Refresh, Loading } from "../icons/icons";
 
@@ -40,10 +41,18 @@ const setWeatherData = async () => {
   const response = fetch("/.netlify/functions/set-weather");
   const result = await response;
   try {
-    return result.status;
+    return result.json();
   } catch (err) {
     console.error(err);
   }
+};
+
+const getDbLastUpdated = async () => {
+  const fbdburl = process.env.REACT_APP_FIREBASE_DATABASE_URL;
+  const response = await fetch(fbdburl + "/data/lastUpdated.json").then((res) =>
+    res.json()
+  );
+  return response;
 };
 
 const getWeatherData = async () => {
@@ -51,11 +60,13 @@ const getWeatherData = async () => {
   const response = await fetch(fbdburl + "/data/timelines.json").then((res) =>
     res.json()
   );
-  return await response;
+  return response;
 };
 
 export function Weather() {
   const [current, setCurrent] = useState(null);
+  const [staleData, setStaleData] = useState(null);
+  const prevStaleData = usePrevious(staleData);
   const [hourly, setHourly] = useState([]);
   const [week, setWeek] = useState([]);
   const [activeDay, setActiveDay] = useState(0);
@@ -92,25 +103,27 @@ export function Weather() {
     });
   }, []);
 
-  const getTimelines = useCallback(() => {
-    setWeatherData()
-      .then((status) => status === 200 && getWeatherData())
-      .then((response) => handleTimelines(response));
-  }, [handleTimelines]);
+  const handleStaleData = useCallback(() => {
+    getDbLastUpdated()
+      .then((date) => checkStaleData(date))
+      .then((stale) => setStaleData(stale));
+  }, []);
+
+  const chooseTimelineSource = useCallback(
+    (stale) => {
+      const data =
+        stale && stale === true ? setWeatherData() : getWeatherData();
+      data.then((d) => handleTimelines(d));
+    },
+    [handleTimelines]
+  );
 
   useEffect(() => {
-    getWeatherData()
-      .then((timelines) => {
-        return {
-          timelines: timelines,
-          stale: timelines[2] ? checkStaleData(timelines[2].startTime) : true,
-        };
-      })
-      .then((approved) =>
-        approved.stale === true ? true : handleTimelines(approved.timelines)
-      )
-      .then((stale) => stale === true && getTimelines());
-  }, [getTimelines, handleTimelines, refreshWeather]);
+    handleStaleData();
+    staleData !== null &&
+      prevStaleData !== staleData &&
+      chooseTimelineSource(staleData);
+  }, [chooseTimelineSource, handleStaleData, prevStaleData, staleData]);
 
   return current ? (
     <div className="weather-container">
