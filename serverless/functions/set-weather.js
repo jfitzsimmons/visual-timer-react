@@ -41,6 +41,8 @@ exports.handler = function (event, context, callback) {
   const db = admin.database();
   const dbref = db.ref("data");
   const timelinesRef = dbref.child("timelines");
+  const lastUpdatedRef = dbref.child("lastUpdated");
+
   const now = moment.utc();
   const startTime = moment.utc(now).add(0, "minutes").toISOString();
   const endTime = moment.utc(now).add(4, "days").toISOString();
@@ -63,16 +65,17 @@ exports.handler = function (event, context, callback) {
   })
     .then((result) => result.json())
     .then((json) => {
+      lastUpdatedRef.set(json.data.timelines[2].startTime);
       timelinesRef.set(json.data.timelines, (error) => {
         if (error) {
           console.log("Data could not be saved." + error);
         } else {
-          return json.data.timelines;
+          admin.app().delete();
         }
       });
+      return json.data.timelines;
     })
     .then((timelines) => {
-      admin.app().delete();
       callback(null, {
         statusCode: 200,
         body: JSON.stringify(timelines),
