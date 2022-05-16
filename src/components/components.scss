@@ -194,11 +194,12 @@
 }
 
 .icon {
-  max-width: 25px;
+  min-width: 25px;
   height: 30px;
 }
 
 .refresh {
+  display: flex;
   width: 40px;
   height: 40px;
   border: 1px solid var(--timer-border-color);
@@ -218,6 +219,26 @@
   svg {
     stroke: var(--color-text);
   }
+}
+
+.refresh__msg {
+  color: #fffe;
+  border-left: 10px solid var(--timer-border-color);
+  background-color: #5598b9;
+}
+
+.alert-shown {
+  opacity: 1;
+  transition: all 250ms linear;
+  padding: 16px;
+  margin-right: 16px;
+  width: 100%;
+}
+
+.alert-hidden {
+  opacity: 0;
+  transition: all 250ms linear 2s;
+  width: 0;
 }
 
 .weather-container_header {
