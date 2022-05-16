@@ -6,7 +6,7 @@ import {
   weatherCodesNightMap,
   precipitationTypeMap,
 } from "../utils/maps";
-import { localDate } from "../utils/timing";
+import { localDate, localHour } from "../utils/timing";
 import { Temp, Drop } from "../icons/icons";
 import "./components.scss";
 
@@ -14,7 +14,10 @@ export function Day(props) {
   const { startTime, values } = props.day;
   return (
     <div id={props.id} className={`day card ${props.cname}`}>
-      <h6 className="day__date no-events">{localDate(startTime)}</h6>
+      <h6 className="day__date no-events">
+        {localDate(startTime)}{" "}
+        {props.cname === "day-current" && localHour(startTime, false, true)}{" "}
+      </h6>
       <div className="day__primary no-events">
         <div className="day__weather">
           {weatherCodesMap.get(values.weatherCode.toString())}

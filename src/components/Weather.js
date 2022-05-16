@@ -1,18 +1,36 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Hourly } from "./Hourly";
+import { Hourly, MoreHours } from "./Hourly";
 import { Day } from "./Day";
-import { cleanHourly, checkStaleData } from "../utils/timing";
+import { cleanHourly, checkStaleData, localHour } from "../utils/timing";
 import { usePrevious } from "../utils/helpers";
 import "./components.scss";
 import { Refresh, Loading } from "../icons/icons";
 
-export function MoreHours(props) {
-  const { showMore } = props;
+export function UpdateMsg(props) {
+  const { msg } = props;
+  const [isShowingAlert, setShowingAlert] = useState(false);
+  //TEST JPF add clsing icon
+  const handleMsg = useCallback(() => {
+    setShowingAlert(true);
+  }, []);
+
+  useEffect(() => {
+    handleMsg();
+  }, [handleMsg, msg]);
+
   return (
     <>
-      <button id="show_more" className="show_more">
-        {showMore === false ? "More \u2193" : "Less \u2191"}
-      </button>
+      <div
+        id="refresh-msg"
+        className={`refresh__msg ${
+          isShowingAlert ? "alert-shown" : "alert-hidden"
+        }`}
+        onTransitionEnd={() =>
+          isShowingAlert === true && setShowingAlert(false)
+        }
+      >
+        {msg}
+      </div>
     </>
   );
 }
@@ -72,6 +90,8 @@ export function Weather() {
   const [activeDay, setActiveDay] = useState(0);
   const [showMore, setShowMore] = useState(false);
   const [refreshWeather, setRefreshWeather] = useState(0);
+  const prevRefreshWeather = usePrevious(refreshWeather);
+  const [upToDateMsg, setUpToDateMsg] = useState("");
 
   function handleForecastClickEvents(event) {
     event.preventDefault();
@@ -94,18 +114,33 @@ export function Weather() {
     }
   }
 
-  const handleTimelines = useCallback((timelines) => {
-    timelines.forEach((timeline) => {
-      if (timeline.timestep === "current") setCurrent((c) => timeline);
-      if (timeline.timestep === "1d") setWeek((w) => timeline);
-      if (timeline.timestep === "1h")
-        setHourly((t) => cleanHourly(timeline.intervals));
-    });
-  }, []);
+  const showUpdatedMessage = useCallback(
+    (msg) => {
+      setUpToDateMsg(msg);
+    },
+    [setUpToDateMsg]
+  );
+
+  const handleTimelines = useCallback(
+    (timelines) => {
+      timelines.forEach((timeline) => {
+        if (timeline.timestep === "current") setCurrent((c) => timeline);
+        if (timeline.timestep === "1d") setWeek((w) => timeline);
+        if (timeline.timestep === "1h")
+          setHourly((t) => cleanHourly(timeline.intervals));
+      });
+      showUpdatedMessage(
+        `Updated: ${localHour(timelines[2].startTime, false, true)}`
+      );
+    },
+    [showUpdatedMessage]
+  );
 
   const handleStaleData = useCallback(() => {
     getDbLastUpdated()
-      .then((date) => checkStaleData(date))
+      .then((date) => {
+        return checkStaleData(date);
+      })
       .then((stale) => setStaleData(stale));
   }, []);
 
@@ -119,11 +154,26 @@ export function Weather() {
   );
 
   useEffect(() => {
-    handleStaleData();
-    staleData !== null &&
-      prevStaleData !== staleData &&
-      chooseTimelineSource(staleData);
-  }, [chooseTimelineSource, handleStaleData, prevStaleData, staleData]);
+    if (staleData !== null) {
+      prevStaleData !== staleData || staleData === true
+        ? chooseTimelineSource(staleData)
+        : prevRefreshWeather !== refreshWeather &&
+          showUpdatedMessage(`Current${refreshWeather % 2 === 0 ? "!" : "."}`);
+    } else {
+      handleStaleData();
+    }
+    prevRefreshWeather !== refreshWeather &&
+      refreshWeather > 0 &&
+      handleStaleData();
+  }, [
+    chooseTimelineSource,
+    handleStaleData,
+    prevStaleData,
+    staleData,
+    showUpdatedMessage,
+    refreshWeather,
+    prevRefreshWeather,
+  ]);
 
   return current ? (
     <div className="weather-container">
@@ -134,6 +184,9 @@ export function Weather() {
         >
           <Refresh />
         </button>
+        {upToDateMsg && upToDateMsg.length > 0 && (
+          <UpdateMsg msg={upToDateMsg} />
+        )}
         <h2>Currently:</h2>
       </div>
       <Day day={current.intervals[0]} cname="day-current" />

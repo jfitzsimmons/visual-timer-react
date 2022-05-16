@@ -1,12 +1,12 @@
 import { chunk } from "./helpers";
 
-export const localHour = (startTime, military) => {
+export const localHour = (startTime, military, minutes) => {
   let date = new Date(startTime);
   let hour = date.getHours();
   let post = hour < 12 ? " AM" : " PM";
-  return military
-    ? date.getHours() + post
-    : (date.getHours() % 12 || 12) + post;
+  let time = military && military === true ? hour : hour % 12 || 12;
+  if (minutes && minutes === true) time += ":" + date.getMinutes();
+  return time + post;
 };
 
 export const localDate = (startTime) => {

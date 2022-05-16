@@ -3,6 +3,17 @@ import { weatherCodesMap, precipitationTypeMap } from "../utils/maps";
 import { localHour } from "../utils/timing";
 import { Temp, Drop } from "../icons/icons";
 
+export function MoreHours(props) {
+  const { showMore } = props;
+  return (
+    <>
+      <button id="show_more" className="show_more">
+        {showMore === false ? "More \u2193" : "Less \u2191"}
+      </button>
+    </>
+  );
+}
+
 export function MoreData(props) {
   const { secondaryData } = props;
   return (
