@@ -1,39 +1,11 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Hourly, MoreHours } from "./Hourly";
 import { Day } from "./Day";
+import { RefreshRow } from "./RefreshRow";
 import { cleanHourly, checkStaleData, localHour } from "../utils/timing";
-import { usePrevious } from "../utils/helpers";
+import { usePrevious, useDebounce } from "../utils/helpers";
 import "./components.scss";
-import { Refresh, Loading } from "../icons/icons";
-
-export function UpdateMsg(props) {
-  const { msg } = props;
-  const [isShowingAlert, setShowingAlert] = useState(false);
-  //TEST JPF add clsing icon
-  const handleMsg = useCallback(() => {
-    setShowingAlert(true);
-  }, []);
-
-  useEffect(() => {
-    handleMsg();
-  }, [handleMsg, msg]);
-
-  return (
-    <>
-      <div
-        id="refresh-msg"
-        className={`refresh__msg ${
-          isShowingAlert ? "alert-shown" : "alert-hidden"
-        }`}
-        onTransitionEnd={() =>
-          isShowingAlert === true && setShowingAlert(false)
-        }
-      >
-        {msg}
-      </div>
-    </>
-  );
-}
+import { LoadingIcon } from "../icons/icons";
 
 export function Forecast(props) {
   const { week } = props;
@@ -90,10 +62,11 @@ export function Weather() {
   const [activeDay, setActiveDay] = useState(0);
   const [showMore, setShowMore] = useState(false);
   const [refreshWeather, setRefreshWeather] = useState(0);
-  const prevRefreshWeather = usePrevious(refreshWeather);
+  const debouncedRefreshWeather = useDebounce(refreshWeather, 1000);
+  const prevRefreshWeather = usePrevious(debouncedRefreshWeather);
   const [upToDateMsg, setUpToDateMsg] = useState("");
 
-  function handleForecastClickEvents(event) {
+  function handleWeatherClickEvents(event) {
     event.preventDefault();
     var target = event.target;
     var targetId = target.id;
@@ -109,6 +82,9 @@ export function Weather() {
       case "show_more":
         showMore === true ? setShowMore(false) : setShowMore(true);
         break;
+      case "refresh-weather":
+        setRefreshWeather(refreshWeather + 1);
+        break;
       default:
         console.warn("Target has no associated function.");
     }
@@ -116,25 +92,28 @@ export function Weather() {
 
   const showUpdatedMessage = useCallback(
     (msg) => {
-      setUpToDateMsg(msg);
+      current &&
+        setUpToDateMsg(
+          `${
+            staleData === true
+              ? "Updated"
+              : `${
+                  debouncedRefreshWeather % 2 !== 0 ? "!!!!!" : ""
+                }Current as of`
+          }: ${localHour(current.intervals[0].startTime, false, true)}`
+        );
     },
-    [setUpToDateMsg]
+    [current, debouncedRefreshWeather, staleData]
   );
 
-  const handleTimelines = useCallback(
-    (timelines) => {
-      timelines.forEach((timeline) => {
-        if (timeline.timestep === "current") setCurrent((c) => timeline);
-        if (timeline.timestep === "1d") setWeek((w) => timeline);
-        if (timeline.timestep === "1h")
-          setHourly((t) => cleanHourly(timeline.intervals));
-      });
-      showUpdatedMessage(
-        `Updated: ${localHour(timelines[2].startTime, false, true)}`
-      );
-    },
-    [showUpdatedMessage]
-  );
+  const handleTimelines = useCallback((timelines) => {
+    timelines.forEach((timeline) => {
+      if (timeline.timestep === "current") setCurrent((c) => timeline);
+      if (timeline.timestep === "1d") setWeek((w) => timeline);
+      if (timeline.timestep === "1h")
+        setHourly((t) => cleanHourly(timeline.intervals));
+    });
+  }, []);
 
   const handleStaleData = useCallback(() => {
     getDbLastUpdated()
@@ -154,40 +133,31 @@ export function Weather() {
   );
 
   useEffect(() => {
+    debouncedRefreshWeather !== prevRefreshWeather &&
+      debouncedRefreshWeather > 0 &&
+      handleStaleData();
+  }, [handleStaleData, prevRefreshWeather, debouncedRefreshWeather]);
+
+  useEffect(() => {
     if (staleData !== null) {
-      prevStaleData !== staleData || staleData === true
+      prevStaleData !== staleData
         ? chooseTimelineSource(staleData)
-        : prevRefreshWeather !== refreshWeather &&
-          showUpdatedMessage(`Current${refreshWeather % 2 === 0 ? "!" : "."}`);
+        : showUpdatedMessage();
     } else {
       handleStaleData();
     }
-    prevRefreshWeather !== refreshWeather &&
-      refreshWeather > 0 &&
-      handleStaleData();
   }, [
     chooseTimelineSource,
     handleStaleData,
     prevStaleData,
     staleData,
     showUpdatedMessage,
-    refreshWeather,
-    prevRefreshWeather,
   ]);
 
   return current ? (
     <div className="weather-container">
-      <div className="weather-container_header">
-        <button
-          className="refresh"
-          onClick={() => setRefreshWeather(refreshWeather + 1)}
-        >
-          <Refresh />
-        </button>
-        {upToDateMsg && upToDateMsg.length > 0 && (
-          <UpdateMsg msg={upToDateMsg} />
-        )}
-        <h2>Currently:</h2>
+      <div onClick={handleWeatherClickEvents}>
+        <RefreshRow upToDateMsg={upToDateMsg} />
       </div>
       <Day day={current.intervals[0]} cname="day-current" />
       <Hourly
@@ -195,7 +165,7 @@ export function Weather() {
         showMore={showMore}
         activeDay={activeDay}
       />
-      <div onClick={handleForecastClickEvents}>
+      <div onClick={handleWeatherClickEvents}>
         {hourly[activeDay].length > 8 && <MoreHours showMore={showMore} />}
         <Forecast week={week.intervals} active={activeDay} />
       </div>
@@ -203,7 +173,7 @@ export function Weather() {
   ) : (
     <div className="loading">
       <div className="loading__icon">
-        <Loading />
+        <LoadingIcon />
       </div>
       <div className="loading__text">loading...</div>
     </div>
