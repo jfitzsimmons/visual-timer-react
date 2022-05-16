@@ -1,11 +1,18 @@
 import { chunk } from "./helpers";
 
+function addZero(i) {
+  if (i < 10) {
+    i = "0" + i;
+  }
+  return i;
+}
+
 export const localHour = (startTime, military, minutes) => {
   let date = new Date(startTime);
   let hour = date.getHours();
   let post = hour < 12 ? " AM" : " PM";
   let time = military && military === true ? hour : hour % 12 || 12;
-  if (minutes && minutes === true) time += ":" + date.getMinutes();
+  if (minutes && minutes === true) time += ":" + addZero(date.getMinutes());
   return time + post;
 };
 

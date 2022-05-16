@@ -101,11 +101,11 @@ export const Reset = () => {
   );
 };
 
-export const Refresh = () => {
+export const RefreshIcon = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className="icon icon-tabler icon-tabler-refresh"
+      className="icon icon-tabler icon-tabler-refresh no-events"
       width="44"
       height="44"
       viewBox="0 0 24 24"
@@ -122,7 +122,7 @@ export const Refresh = () => {
   );
 };
 
-export const Loading = () => {
+export const LoadingIcon = () => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

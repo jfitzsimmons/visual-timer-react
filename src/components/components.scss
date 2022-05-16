@@ -200,8 +200,7 @@
 
 .refresh {
   display: flex;
-  width: 40px;
-  height: 40px;
+  padding: 8px;
   border: 1px solid var(--timer-border-color);
   color: var(--timer-border-color);
   border-radius: 16px;
@@ -225,14 +224,30 @@
   color: #fffe;
   border-left: 10px solid var(--timer-border-color);
   background-color: #5598b9;
+  max-width: 500px;
+  height: 40px;
+  overflow: hidden;
 }
 
+.refresh__animation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.weather-loading {
+  transform: rotate(360deg);
+  transition: 3.5s transform;
+}
+.weather-loading {
+  transform: rotate(-360deg);
+}
 .alert-shown {
   opacity: 1;
   transition: all 250ms linear;
   padding: 16px;
   margin-right: 16px;
   width: 100%;
+  margin: 16px;
 }
 
 .alert-hidden {
