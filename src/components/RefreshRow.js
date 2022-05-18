@@ -1,59 +1,68 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useLayoutEffect, useCallback } from "react";
+import { CSSTransition } from "react-transition-group";
 import { RefreshIcon } from "../icons/icons";
 import "./components.scss";
 
 export function UpdateMsg(props) {
   const { msg } = props;
   const [isShowingAlert, setShowingAlert] = useState(false);
-  //TEST JPF add clsing icon
+
   const handleMsg = useCallback(() => {
     setShowingAlert(true);
   }, []);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     handleMsg();
   }, [handleMsg, msg]);
 
   return (
     <>
-      <div
-        id="refresh-msg"
-        className={`refresh__msg ${
-          isShowingAlert ? "alert-shown" : "alert-hidden"
-        }`}
-        onTransitionEnd={() =>
-          isShowingAlert === true && setShowingAlert(false)
+      <CSSTransition
+        in={isShowingAlert}
+        timeout={500}
+        classNames="refresh__msg"
+        onEntered={() =>
+          setTimeout(function () {
+            setShowingAlert(false);
+          }, 3000)
         }
       >
-        {msg}
-      </div>
+        <div
+          id="refresh-msg"
+          className="msg-format"
+          onClick={() => isShowingAlert === true && setShowingAlert(false)}
+        >
+          {msg}
+          <button className="close">X</button>
+        </div>
+      </CSSTransition>
     </>
   );
 }
 
 export function RefreshRow(props) {
   const { upToDateMsg } = props;
-  const [isShowingAlert, setShowingAlert] = useState(false);
+  const [isShowingAlert, setShowingAlert2] = useState(false);
 
   function animateButton(event) {
-    isShowingAlert === false && setShowingAlert(true);
+    isShowingAlert === false && setShowingAlert2(true);
   }
 
   return (
     <div className="weather-container_header">
+      {upToDateMsg && upToDateMsg.length > 0 && <UpdateMsg msg={upToDateMsg} />}
       <button id="refresh-weather" className="refresh" onClick={animateButton}>
         <div
           className={`refresh__animation no-events ${
             isShowingAlert ? "weather-loading" : "weather-loaded"
           }`}
           onTransitionEnd={() =>
-            isShowingAlert === true && setShowingAlert(false)
+            isShowingAlert === true && setShowingAlert2(false)
           }
         >
           <RefreshIcon />
         </div>
       </button>
-      {upToDateMsg && upToDateMsg.length > 0 && <UpdateMsg msg={upToDateMsg} />}
       <h2>Currently:</h2>
     </div>
   );

@@ -40,7 +40,9 @@ export function Day(props) {
         {!!values.precipitationType && values.precipitationType !== 0 && (
           <div className="day__precip row-v-align">
             <Drop />
-            <b>{values.precipitationProbability}% </b>{" "}
+            <div className="bold">
+              <span>{values.precipitationProbability}%&nbsp;</span>{" "}
+            </div>
             <sub>
               chance of{" "}
               {precipitationTypeMap.get(values.precipitationType.toString())}

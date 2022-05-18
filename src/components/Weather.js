@@ -62,7 +62,7 @@ export function Weather() {
   const [activeDay, setActiveDay] = useState(0);
   const [showMore, setShowMore] = useState(false);
   const [refreshWeather, setRefreshWeather] = useState(0);
-  const debouncedRefreshWeather = useDebounce(refreshWeather, 1000);
+  const debouncedRefreshWeather = useDebounce(refreshWeather, 500);
   const prevRefreshWeather = usePrevious(debouncedRefreshWeather);
   const [upToDateMsg, setUpToDateMsg] = useState("");
 
