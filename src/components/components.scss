@@ -102,7 +102,7 @@
   margin: 10px;
   border-radius: 16px 80% 16px 16px;
   max-width: 800px;
-  div {
+  > div {
     flex: 1;
     min-width: 250px;
   }
@@ -220,7 +220,33 @@
   }
 }
 
-.refresh__msg {
+.refresh__animation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.weather-loading {
+  transform: rotate(360deg);
+  transition: 3.5s transform;
+}
+
+.weather-loading {
+  transform: rotate(-360deg);
+}
+
+.close {
+  float: right;
+  border: 0;
+  outline: 0;
+  color: #fffe;
+}
+
+.close:hover {
+  color: #222e;
+}
+
+.msg-format {
   color: #fffe;
   border-left: 10px solid var(--timer-border-color);
   background-color: #5598b9;
@@ -229,31 +255,39 @@
   overflow: hidden;
 }
 
-.refresh__animation {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+.refresh__msg-enter {
+  opacity: 0;
+  padding: 0;
+  margin-right: 0;
+  width: 0;
 }
-.weather-loading {
-  transform: rotate(360deg);
-  transition: 3.5s transform;
-}
-.weather-loading {
-  transform: rotate(-360deg);
-}
-.alert-shown {
+
+.refresh__msg-enter-done {
   opacity: 1;
-  transition: all 250ms linear;
+  transition: all 0.5s linear;
   padding: 16px;
   margin-right: 16px;
   width: 100%;
   margin: 16px;
+  max-width: 500px;
 }
 
-.alert-hidden {
+.refresh__msg-exit,
+.refresh__msg-exit-active {
+  opacity: 1;
+  width: 100%;
+  margin-right: 16px;
+  padding: 16px;
+  max-width: 500px;
+}
+
+.refresh__msg-exit-active,
+.refresh__msg-exit-done {
+  transition: all 0.5s linear;
   opacity: 0;
-  transition: all 250ms linear 2s;
   width: 0;
+  margin-right: 0;
+  padding: 0;
 }
 
 .weather-container_header {

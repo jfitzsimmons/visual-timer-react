@@ -115,12 +115,13 @@ export function Hourly(props) {
         Hourly:{" "}
         {activeDay === 0
           ? "Today"
-          : `${activeDay} ${activeDay > 1 ? "days" : "day"} from now`}
+          : activeDay > 1
+          ? `${activeDay} days from now`
+          : "Tomorrow"}
       </h4>
       <div onClick={handleHourlyClickEvents}>
         <div className="flex hourly">
           {_d.map((hour, i) => (
-            /**destructure insid ehere TeSTJPF!!! */
             <div
               key={`hour${i}`}
               id={`hour_${i}`}
