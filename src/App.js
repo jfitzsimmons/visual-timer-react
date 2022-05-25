@@ -4,7 +4,7 @@ import Timer from "./components/Timer";
 import { fbDbRestApiconfig } from "./utils/helpers";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import firebase from "firebase/compat/app";
-import * as firebaseui from "firebaseui";
+import "firebase/compat/auth";
 import "./App.scss";
 
 if (firebase.apps.length === 0) {
@@ -17,13 +17,7 @@ const uiConfig = {
       return false;
     },
   },
-  signInFlow: "popup",
-  signInOptions: [
-    {
-      provider: firebase.auth.EmailAuthProvider.PROVIDER_ID,
-      requireDisplayName: false,
-    },
-  ],
+  signInOptions: [firebase.auth.EmailAuthProvider.PROVIDER_ID],
 };
 
 export function SignInScreen() {
