@@ -37,23 +37,24 @@ const setWeatherData = async () => {
   }
 };
 
-const getDbLastUpdated = async () => {
+const getDbLastUpdated = async (userToken) => {
   const fbdburl = process.env.REACT_APP_FIREBASE_DATABASE_URL;
-  const response = await fetch(fbdburl + "/data/lastUpdated.json").then((res) =>
-    res.json()
-  );
+  const response = await fetch(
+    fbdburl + "/data/lastUpdated.json?auth=" + userToken
+  ).then((res) => res.json());
   return response;
 };
 
-const getWeatherData = async () => {
+const getWeatherData = async (userToken) => {
   const fbdburl = process.env.REACT_APP_FIREBASE_DATABASE_URL;
-  const response = await fetch(fbdburl + "/data/timelines.json").then((res) =>
-    res.json()
-  );
+  const response = await fetch(
+    fbdburl + "/data/timelines.json?auth=" + userToken
+  ).then((res) => res.json());
   return response;
 };
 
-export function Weather() {
+export function Weather(props) {
+  const { userToken } = props;
   const [current, setCurrent] = useState(null);
   const [staleData, setStaleData] = useState(null);
   const prevStaleData = usePrevious(staleData);
@@ -115,14 +116,14 @@ export function Weather() {
   const chooseTimelineSource = useCallback(
     (stale) => {
       const data =
-        stale && stale === true ? setWeatherData() : getWeatherData();
+        stale && stale === true ? setWeatherData() : getWeatherData(userToken);
       data.then((d) => handleTimelines(d));
     },
-    [handleTimelines]
+    [handleTimelines, userToken]
   );
 
   const handleStaleData = useCallback(() => {
-    getDbLastUpdated()
+    getDbLastUpdated(userToken)
       .then((date) => {
         return checkStaleData(date);
       })
@@ -133,7 +134,7 @@ export function Weather() {
           ? chooseTimelineSource(stale)
           : showUpdatedMessage()
       );
-  }, [chooseTimelineSource, showUpdatedMessage, staleData]);
+  }, [chooseTimelineSource, showUpdatedMessage, staleData, userToken]);
 
   const debounceHandleStaleData = debounce(handleStaleData, 500);
 

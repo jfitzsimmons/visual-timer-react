@@ -221,3 +221,33 @@ svg {
 .relative {
   position: relative;
 }
+
+.sign_out {
+  color: var(--lighter-color-text);
+  border: 0;
+  outline: 0;
+  align-self: end;
+  padding: 16px 0;
+}
+
+.sign_out:hover {
+  text-decoration: underline;
+  color: var(--color-text);
+}
+
+.fade_in2 {
+  animation: fadeInAnimation ease-in 1.5s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fadeInAnimation {
+  0% {
+    opacity: 0;
+    display: none;
+  }
+  100% {
+    opacity: 1;
+    display: inherit;
+  }
+}
