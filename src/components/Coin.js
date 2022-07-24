@@ -9,7 +9,6 @@ function Coin() {
   const flipCoin = () => {
     startAnimation();
     Math.random() < 0.5 ? setSide(true) : setSide(false);
-    console.log(Math.random());
   };
 
   const startAnimation = () => {
