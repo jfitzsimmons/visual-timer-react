@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Weather } from "./components/Weather";
 import Timer from "./components/Timer";
+import Coin from "./components/Coin";
 import { fbDbRestApiconfig } from "./utils/helpers";
 import StyledFirebaseAuth from "react-firebaseui/StyledFirebaseAuth";
 import firebase from "firebase/compat/app";
@@ -80,7 +81,10 @@ function App() {
         </label>
         <span>Light</span>
       </div>
-      <Timer />
+      <div className="widget_container">
+        <Timer />
+        <Coin />
+      </div>
       {signedIn !== null &&
         (signedIn === false || !userToken ? (
           <SignInScreen />
