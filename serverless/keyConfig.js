@@ -1,7 +1,7 @@
 module.exports = {
   FIREBASE_KEY: {
     type: process.env.FIREBASE_TYPE,
-    project_id: process.env.FIREBASE_PROJECT_ID,
+    project_id: process.env.REACT_APP_FIREBASE_PROJECT_ID,
     private_key_id: process.env.FIREBASE_KEY_ID,
     private_key: process.env.FIREBASE_KEY.replace(/\\n/g, "\n"),
     client_email: process.env.FIREBASE_KEY_CLIENT_EMAIL,

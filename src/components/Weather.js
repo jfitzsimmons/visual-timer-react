@@ -3,7 +3,7 @@ import { Hourly, MoreHours } from "./Hourly";
 import { Day } from "./Day";
 import { RefreshRow } from "./RefreshRow";
 import { cleanHourly, checkStaleData, localHour } from "../utils/timing";
-import { usePrevious, useDebounce } from "../utils/helpers";
+import { usePrevious, debounce } from "../utils/helpers";
 import "./components.scss";
 import { LoadingIcon } from "../icons/icons";
 
@@ -37,23 +37,24 @@ const setWeatherData = async () => {
   }
 };
 
-const getDbLastUpdated = async () => {
+const getDbLastUpdated = async (userToken) => {
   const fbdburl = process.env.REACT_APP_FIREBASE_DATABASE_URL;
-  const response = await fetch(fbdburl + "/data/lastUpdated.json").then((res) =>
-    res.json()
-  );
+  const response = await fetch(
+    fbdburl + "/data/lastUpdated.json?auth=" + userToken
+  ).then((res) => res.json());
   return response;
 };
 
-const getWeatherData = async () => {
+const getWeatherData = async (userToken) => {
   const fbdburl = process.env.REACT_APP_FIREBASE_DATABASE_URL;
-  const response = await fetch(fbdburl + "/data/timelines.json").then((res) =>
-    res.json()
-  );
+  const response = await fetch(
+    fbdburl + "/data/timelines.json?auth=" + userToken
+  ).then((res) => res.json());
   return response;
 };
 
-export function Weather() {
+export function Weather(props) {
+  const { userToken } = props;
   const [current, setCurrent] = useState(null);
   const [staleData, setStaleData] = useState(null);
   const prevStaleData = usePrevious(staleData);
@@ -61,9 +62,7 @@ export function Weather() {
   const [week, setWeek] = useState([]);
   const [activeDay, setActiveDay] = useState(0);
   const [showMore, setShowMore] = useState(false);
-  const [refreshWeather, setRefreshWeather] = useState(0);
-  const debouncedRefreshWeather = useDebounce(refreshWeather, 500);
-  const prevRefreshWeather = usePrevious(debouncedRefreshWeather);
+
   const [upToDateMsg, setUpToDateMsg] = useState("");
 
   function handleWeatherClickEvents(event) {
@@ -83,7 +82,7 @@ export function Weather() {
         showMore === true ? setShowMore(false) : setShowMore(true);
         break;
       case "refresh-weather":
-        setRefreshWeather(refreshWeather + 1);
+        debounceHandleStaleData();
         break;
       default:
         console.warn("Target has no associated function.");
@@ -92,18 +91,17 @@ export function Weather() {
 
   const showUpdatedMessage = useCallback(
     (msg) => {
-      current &&
+      if (current) {
         setUpToDateMsg(
-          `${
-            staleData === true
-              ? "Updated"
-              : `${
-                  debouncedRefreshWeather % 2 !== 0 ? "!!!!!" : ""
-                }Current as of`
-          }: ${localHour(current.intervals[0].startTime, false, true)}`
+          `${staleData === true ? "Updated" : `Current as of`}: ${localHour(
+            current.intervals[0].startTime,
+            false,
+            true
+          )} [${Math.random().toString(36).slice(2, 7)}]`
         );
+      }
     },
-    [current, debouncedRefreshWeather, staleData]
+    [current, staleData]
   );
 
   const handleTimelines = useCallback((timelines) => {
@@ -115,28 +113,30 @@ export function Weather() {
     });
   }, []);
 
-  const handleStaleData = useCallback(() => {
-    getDbLastUpdated()
-      .then((date) => {
-        return checkStaleData(date);
-      })
-      .then((stale) => setStaleData(stale));
-  }, []);
-
   const chooseTimelineSource = useCallback(
     (stale) => {
       const data =
-        stale && stale === true ? setWeatherData() : getWeatherData();
+        stale && stale === true ? setWeatherData() : getWeatherData(userToken);
       data.then((d) => handleTimelines(d));
     },
-    [handleTimelines]
+    [handleTimelines, userToken]
   );
 
-  useEffect(() => {
-    debouncedRefreshWeather !== prevRefreshWeather &&
-      debouncedRefreshWeather > 0 &&
-      handleStaleData();
-  }, [handleStaleData, prevRefreshWeather, debouncedRefreshWeather]);
+  const handleStaleData = useCallback(() => {
+    getDbLastUpdated(userToken)
+      .then((date) => {
+        return checkStaleData(date);
+      })
+      .then((stale) =>
+        stale !== staleData
+          ? setStaleData(stale)
+          : stale === true
+          ? chooseTimelineSource(stale)
+          : showUpdatedMessage()
+      );
+  }, [chooseTimelineSource, showUpdatedMessage, staleData, userToken]);
+
+  const debounceHandleStaleData = debounce(handleStaleData, 500);
 
   useEffect(() => {
     if (staleData !== null) {

@@ -19,7 +19,7 @@ export function UpdateMsg(props) {
     <>
       <CSSTransition
         in={isShowingAlert}
-        timeout={500}
+        timeout={400}
         classNames="refresh__msg"
         onEntered={() =>
           setTimeout(function () {
@@ -42,10 +42,11 @@ export function UpdateMsg(props) {
 
 export function RefreshRow(props) {
   const { upToDateMsg } = props;
-  const [isShowingAlert, setShowingAlert2] = useState(false);
+  const [isShowingAlert, setShowingAlert] = useState(false);
 
   function animateButton(event) {
-    isShowingAlert === false && setShowingAlert2(true);
+    event.preventDefault();
+    isShowingAlert === false && setShowingAlert(true);
   }
 
   return (
@@ -57,7 +58,7 @@ export function RefreshRow(props) {
             isShowingAlert ? "weather-loading" : "weather-loaded"
           }`}
           onTransitionEnd={() =>
-            isShowingAlert === true && setShowingAlert2(false)
+            isShowingAlert === true && setShowingAlert(false)
           }
         >
           <RefreshIcon />
