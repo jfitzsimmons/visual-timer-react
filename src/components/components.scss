@@ -1,4 +1,12 @@
-.timer_container {
+.widget_container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  width: 100%;
+}
+
+.timer_container,
+.coin_container {
   font-size: 30px;
   background: var(--card-background);
   border-radius: 50px;
@@ -9,7 +17,9 @@
   max-width: 400px;
   text-align: center;
   transition: 0.7s;
+  margin: 10px;
 }
+
 .main-title {
   font-size: 50px;
   margin-bottom: 20px;
@@ -76,6 +86,66 @@
   }
   .timer-control button:active {
     color: #13353a;
+  }
+}
+
+.coin_container {
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+
+.coin {
+  border: 7px solid hsla(13, 98%, 49%, 0.2);
+  border-radius: 50%;
+  height: 90%;
+  width: 90%;
+  justify-content: center;
+  display: flex;
+  align-items: center;
+}
+
+.coin .icon {
+  width: 70%;
+  height: 70%;
+}
+
+.animation > .coin {
+  text-align: center;
+  animation-name: spin, depth;
+  animation-timing-function: linear;
+  animation-duration: 1.5s;
+  border: 7px solid rgb(13, 165, 13);
+}
+
+@keyframes spin {
+  from {
+    transform: rotateY(0deg);
+  }
+  to {
+    transform: rotateX(-360deg);
+  }
+}
+
+@keyframes depth {
+  0% {
+    text-shadow: 0 0 var(--card-background);
+  }
+  25% {
+    text-shadow: 1px 0 var(--card-background), 2px 0 var(--card-background),
+      3px 0 var(--card-background), 4px 0 var(--card-background),
+      5px 0 var(--card-background);
+  }
+  50% {
+    text-shadow: 0 0 var(--card-background);
+  }
+  75% {
+    text-shadow: -1px 0 var(--card-background), -2px 0 var(--card-background),
+      -3px 0 var(--card-background), -4px 0 var(--card-background),
+      -5px 0 var(--card-background);
+  }
+  100% {
+    text-shadow: 0 0 var(--card-background);
   }
 }
 
