@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { TailsIcon, HeadsIcon } from "../icons/icons";
 
 function Coin() {
