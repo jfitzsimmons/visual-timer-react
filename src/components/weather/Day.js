@@ -5,10 +5,10 @@ import {
   weatherCodesDayMap,
   weatherCodesNightMap,
   precipitationTypeMap,
-} from "../utils/maps";
-import { localDate, localHour } from "../utils/timing";
-import { Temp, Drop } from "../icons/icons";
-import "./components.scss";
+} from "../../utils/maps";
+import { localDate, localHour } from "../../utils/timing";
+import { Temp, Drop } from "../../icons/icons";
+import "./weather.scss";
 
 export function Day(props) {
   const { startTime, values } = props.day;

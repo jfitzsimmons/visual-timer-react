@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { TimerLengthControl } from "./Control";
 import { Play, Pause, Reset } from "../icons/icons";
+import "./components.scss";
 
 function useInterval(callback, delay) {
   const savedCallback = useRef();

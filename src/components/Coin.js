@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { TailsIcon, HeadsIcon } from "../icons/icons";
+import "./components.scss";
 
 function Coin() {
   const [side, setSide] = useState(null);

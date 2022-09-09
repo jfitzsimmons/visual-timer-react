@@ -2,10 +2,10 @@ import React, { useState, useEffect, useCallback } from "react";
 import { Hourly, MoreHours } from "./Hourly";
 import { Day } from "./Day";
 import { RefreshRow } from "./RefreshRow";
-import { cleanHourly, checkStaleData, localHour } from "../utils/timing";
-import { usePrevious, debounce } from "../utils/helpers";
-import "./components.scss";
-import { LoadingIcon } from "../icons/icons";
+import { cleanHourly, checkStaleData, localHour } from "../../utils/timing";
+import { usePrevious, debounce } from "../../utils/helpers";
+import "./weather.scss";
+import { LoadingIcon } from "../../icons/icons";
 
 export function Forecast(props) {
   const { week } = props;

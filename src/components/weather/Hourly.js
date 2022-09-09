@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { weatherCodesMap, precipitationTypeMap } from "../utils/maps";
-import { localHour } from "../utils/timing";
-import { Temp, Drop } from "../icons/icons";
+import { weatherCodesMap, precipitationTypeMap } from "../../utils/maps";
+import { localHour } from "../../utils/timing";
+import { Temp, Drop } from "../../icons/icons";
 
 export function MoreHours(props) {
   const { showMore } = props;
