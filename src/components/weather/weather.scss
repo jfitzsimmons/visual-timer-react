@@ -23,6 +23,7 @@
   max-width: 800px;
   width: 100%;
   min-height: 160px;
+  box-sizing: border-box;
   > div {
     flex: 1;
     min-width: 250px;
