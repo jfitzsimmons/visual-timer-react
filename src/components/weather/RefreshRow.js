@@ -1,7 +1,7 @@
 import React, { useState, useLayoutEffect, useCallback } from "react";
 import { CSSTransition } from "react-transition-group";
-import { RefreshIcon } from "../icons/icons";
-import "./components.scss";
+import { RefreshIcon } from "../../icons/icons";
+import "./weather.scss";
 
 export function UpdateMsg(props) {
   const { msg } = props;

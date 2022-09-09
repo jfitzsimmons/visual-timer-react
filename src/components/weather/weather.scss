@@ -1,0 +1,305 @@
+.weather-container {
+  width: 100%;
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  max-width: 980px;
+}
+
+.forecast {
+  display: flex;
+  justify-content: space-around;
+  max-width: 1300px;
+  flex-wrap: wrap;
+}
+
+.day-current {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  padding: 10px;
+  margin: 10px;
+  border-radius: 16px 80% 16px 16px;
+  max-width: 800px;
+  width: 100%;
+  min-height: 160px;
+  box-sizing: border-box;
+  > div {
+    flex: 1;
+    min-width: 250px;
+  }
+  h6 {
+    border: 0;
+    font-size: 14px;
+  }
+}
+
+.day__date {
+  width: 100%;
+}
+
+.day__primary {
+  line-height: 19px;
+}
+
+.day__secondary {
+  align-self: flex-end;
+  margin-top: 20px;
+  line-height: 19px;
+  font-size: 0.94rem;
+}
+
+.day-forecast {
+  padding: 10px;
+  margin: 10px;
+  min-width: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  flex: 1 1;
+  max-width: 400px;
+  cursor: pointer;
+  transition: 0.3s;
+  min-height: 266px;
+}
+
+.day-forecast:hover {
+  box-shadow: var(--button-shadow);
+}
+
+.hour {
+  padding: 10px;
+  margin: 10px;
+  cursor: pointer;
+  transition: 0.3s;
+  min-height: 134px;
+  min-width: 94px;
+}
+
+.hour:hover {
+  padding: 10px;
+  margin: 10px;
+  cursor: pointer;
+  box-shadow: var(--button-shadow);
+}
+
+.show_more {
+  width: 100%;
+  text-align: center;
+  border-radius: 0 0 16px 16px;
+  border: 1px solid var(--timer-border-color);
+  border-top: 0;
+  padding: 16px;
+  box-shadow: var(--button-shadow);
+  color: var(--color-text);
+  transition: 0.3s;
+}
+
+.show_more:hover {
+  background-color: var(--card-background);
+}
+
+.row-v-align {
+  display: flex;
+  align-items: center;
+}
+
+.hour__weather {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.day__weather {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.day__weather__night {
+  margin-bottom: 16px;
+}
+
+.icon {
+  min-width: 25px;
+  height: 30px;
+}
+
+.refresh {
+  display: flex;
+  padding: 8px;
+  border: 1px solid var(--timer-border-color);
+  color: var(--timer-border-color);
+  border-radius: 16px;
+  margin-right: 16px;
+  transition: 0.4s;
+  svg {
+    stroke: var(--timer-border-color);
+  }
+}
+
+.refresh:hover {
+  border: 1px solid var(--color-text);
+  color: var(--color-text);
+  transition: 0.4s;
+  svg {
+    stroke: var(--color-text);
+  }
+}
+
+.refresh__animation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.weather-loading {
+  transform: rotate(720deg);
+  transition: 4s transform;
+}
+
+.weather-loading {
+  transform: rotate(-720deg);
+}
+
+.close {
+  float: right;
+  border: 0;
+  outline: 0;
+  color: #fffe;
+}
+
+.close:hover {
+  color: #222e;
+}
+
+.msg-format {
+  color: #fffe;
+  border-left: 10px solid var(--timer-border-color);
+  background-color: #5598b9;
+  max-width: 500px;
+  height: 40px;
+  overflow: hidden;
+}
+
+.refresh__msg-enter {
+  opacity: 0;
+  padding: 0;
+  margin-right: 0;
+  width: 0;
+}
+
+.refresh__msg-enter-done {
+  opacity: 1;
+  transition: all 0.5s linear;
+  padding: 16px;
+  margin-right: 16px;
+  width: 100%;
+  margin: 16px;
+  max-width: 500px;
+}
+
+.refresh__msg-exit,
+.refresh__msg-exit-active {
+  opacity: 1;
+  width: 100%;
+  margin-right: 16px;
+  padding: 16px;
+  max-width: 500px;
+}
+
+.refresh__msg-exit-active,
+.refresh__msg-exit-done {
+  transition: all 0.5s linear;
+  opacity: 0;
+  width: 0;
+  margin-right: 0;
+  padding: 0;
+}
+
+.weather-container_header {
+  display: flex;
+  align-items: center;
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes flickerAnimation {
+  0% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.loading__text {
+  font-size: 3rem;
+  animation: flickerAnimation 2s infinite ease-in;
+  text-align: center;
+}
+
+.icon-loader {
+  width: 300px;
+  height: 300px;
+}
+
+.loading {
+  opacity: 0;
+  animation: fadeIn linear 0.7s;
+  animation-delay: 0.3s;
+  animation-fill-mode: forwards;
+}
+
+.line {
+  opacity: 0;
+  animation: flickerAnimation;
+  animation-iteration-count: infinite;
+}
+
+.line-1 {
+  animation-duration: 2s;
+}
+
+.line-2 {
+  animation-delay: 0.25s;
+  animation-duration: 2s;
+}
+
+.line-3 {
+  animation-delay: 0.5s;
+  animation-duration: 2s;
+}
+
+.line-4 {
+  animation-delay: 0.75s;
+  animation-duration: 2s;
+}
+
+.line-5 {
+  animation-delay: 1s;
+  animation-duration: 2s;
+}
+
+.line-6 {
+  animation-delay: 1.25s;
+  animation-duration: 2s;
+}
+
+.line-7 {
+  animation-delay: 1.5s;
+  animation-duration: 2s;
+}
+
+.line-8 {
+  animation-delay: 1.75s;
+  animation-duration: 2s;
+}

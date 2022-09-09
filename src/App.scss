@@ -162,7 +162,7 @@ svg {
   height: 24px;
 }
 
-.switch .timer_input {
+.switch .mode__input {
   opacity: 0;
   width: 0;
   height: 0;
@@ -192,15 +192,15 @@ svg {
   transition: 0.4s;
 }
 
-.timer_input:checked + .slider {
+.mode__input:checked + .slider {
   background-color: #5598b9;
 }
 
-.timer_input:focus + .slider {
+.mode__input:focus + .slider {
   box-shadow: 0 0 1px #5598b9;
 }
 
-.timer_input:checked + .slider:before {
+.mode__input:checked + .slider:before {
   -webkit-transform: translateX(26px);
   -ms-transform: translateX(26px);
   transform: translateX(26px);

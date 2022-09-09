@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Weather } from "./components/Weather";
+import { Weather } from "./components/weather/Weather";
 import Timer from "./components/Timer";
 import Coin from "./components/Coin";
 import { fbDbRestApiconfig } from "./utils/helpers";
@@ -72,7 +72,7 @@ function App() {
         <label className="switch">
           <input
             type="checkbox"
-            className="timer_input"
+            className="mode__input"
             onClick={() =>
               lightMode === true ? setLightMode(false) : setLightMode(true)
             }
