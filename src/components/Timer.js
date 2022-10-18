@@ -26,10 +26,15 @@ function Timer() {
       (isVisible === true && timerState === "sleep")
     ) {
       setTimerState("running");
-      setAlarmColor({
-        color: "#0da50d",
-        borderColor: "#0da50d",
-      });
+      timerType === "Session"
+        ? setAlarmColor({
+            color: "#0da50d",
+            borderColor: "#0da50d",
+          })
+        : setAlarmColor({
+            color: "#a50d0d",
+            borderColor: "#a50d0d",
+          });
     } else {
       intervalRef.current && clear(intervalRef.current);
       if (timerState !== "loaded") setTimerState("stopped");
@@ -37,7 +42,7 @@ function Timer() {
         borderColor: "hsla(13, 98%, 49%, .2)",
       });
     }
-  }, [isVisible, timerState]);
+  }, [isVisible, timerState, timerType]);
 
   const getAppWakeTime = useCallback(() => {
     const currentTimeInMilliseconds = Math.floor(new Date().getTime() / 1000);
@@ -81,6 +86,12 @@ function Timer() {
   const handleSeshLength = (e) => {
     setSeshLength(e.currentTarget.value);
     setTimer(e.currentTarget.value * 60);
+    setTimerType("Session");
+    setAlarmColor({
+      color: "inherit",
+      borderColor: "hsla(13, 98%, 49%, .2)",
+    });
+    setTimerState("stopped");
   };
 
   const accurateInterval = () => {
