@@ -1,35 +1,78 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import { TimerLengthControl } from "./Control";
+import { usePageVisibility, useInterval, usePrevious } from "../utils/helpers";
 import { Play, Pause, Reset } from "../icons/icons";
 import "./components.scss";
 
-function useInterval(callback, delay) {
-  const savedCallback = useRef();
-
-  useEffect(() => {
-    savedCallback.current = callback;
-  }, [callback]);
-
-  useEffect(() => {
-    function tick() {
-      savedCallback.current();
-    }
-    if (delay !== null) {
-      let id = setInterval(tick, delay);
-      return () => clearInterval(id);
-    }
-  }, [delay]);
-}
-
 function Timer() {
   const [seshLength, setSeshLength] = useState(120);
-  const [timerState, setTimerState] = useState("stopped");
+  const [cachedTime, setCachedTime] = useState(
+    Math.floor(new Date().getTime() / 1000)
+  );
+  const [timerState, setTimerState] = useState("loaded");
   const [timerType, setTimerType] = useState("Session");
   const [timer, setTimer] = useState(7200);
   const [alarmColor, setAlarmColor] = useState({
     borderColor: "hsla(13, 98%, 49%, 0.2)",
   });
   const intervalRef = useRef(null);
+  const isVisible = usePageVisibility();
+  const prevIsVisible = usePrevious(isVisible);
+
+  const timerControl = useCallback(() => {
+    if (
+      timerState === "stopped" ||
+      timerState === "loaded" ||
+      (isVisible === true && timerState === "sleep")
+    ) {
+      setTimerState("running");
+      setAlarmColor({
+        color: "#0da50d",
+        borderColor: "#0da50d",
+      });
+    } else {
+      intervalRef.current && clear(intervalRef.current);
+      if (timerState !== "loaded") setTimerState("stopped");
+      setAlarmColor({
+        borderColor: "hsla(13, 98%, 49%, .2)",
+      });
+    }
+  }, [isVisible, timerState]);
+
+  const getAppWakeTime = useCallback(() => {
+    const currentTimeInMilliseconds = Math.floor(new Date().getTime() / 1000);
+    setTimer(timer - (currentTimeInMilliseconds - cachedTime));
+  }, [cachedTime, timer]);
+
+  const setAppWakeTime = useCallback(() => {
+    setTimerState("sleep");
+    setCachedTime(Math.floor(new Date().getTime() / 1000));
+  }, []);
+
+  useEffect(() => {
+    if (
+      isVisible === false &&
+      prevIsVisible !== isVisible &&
+      timerState === "running"
+    ) {
+      setAppWakeTime();
+    }
+    if (
+      isVisible === true &&
+      prevIsVisible !== isVisible &&
+      timerState === "sleep"
+    ) {
+      getAppWakeTime();
+      timerControl();
+    }
+  }, [
+    getAppWakeTime,
+    isVisible,
+    prevIsVisible,
+    setAppWakeTime,
+    timerControl,
+    timerState,
+  ]);
 
   const clear = () => {
     clearInterval(intervalRef.current);
@@ -38,22 +81,6 @@ function Timer() {
   const handleSeshLength = (e) => {
     setSeshLength(e.currentTarget.value);
     setTimer(e.currentTarget.value * 60);
-  };
-
-  const timerControl = () => {
-    if (timerState === "stopped") {
-      setTimerState("running");
-      setAlarmColor({
-        color: "#0da50d",
-        borderColor: "#0da50d",
-      });
-    } else {
-      intervalRef.current && clear(intervalRef.current);
-      setTimerState("stopped");
-      setAlarmColor({
-        borderColor: "hsla(13, 98%, 49%, .2)",
-      });
-    }
   };
 
   const accurateInterval = () => {
@@ -70,7 +97,7 @@ function Timer() {
     if (_t <= 0) {
       if (timerType === "Session") {
         intervalRef.current && clear(intervalRef.current);
-        switchTimer(1, "Break");
+        switchTimer(Math.abs(_t) + 1, "Break");
         setAlarmColor({
           color: "#a50d0d",
           borderColor: "#a50d0d",
@@ -107,7 +134,7 @@ function Timer() {
 
   const reset = () => {
     let currentSeshLength = seshLength;
-    setTimerState("stopped");
+    setTimerState("loaded");
     setTimerType("Session");
     setTimer(currentSeshLength * 60);
     setAlarmColor({
