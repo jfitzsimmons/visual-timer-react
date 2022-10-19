@@ -52,7 +52,12 @@ export function RefreshRow(props) {
   return (
     <div className="weather-container_header">
       {upToDateMsg && upToDateMsg.length > 0 && <UpdateMsg msg={upToDateMsg} />}
-      <button id="refresh-weather" className="refresh" onClick={animateButton}>
+      <button
+        id="refresh-weather"
+        className="refresh"
+        aria-label="refresh weather data"
+        onClick={animateButton}
+      >
         <div
           className={`refresh__animation no-events ${
             isShowingAlert ? "weather-loading" : "weather-loaded"

@@ -180,11 +180,16 @@ function Timer() {
         </div>{" "}
       </div>{" "}
       <div className="timer-control">
-        <button id="start_stop" onClick={timerControl} onKeyPress={onKeyUp}>
+        <button
+          id="start_stop"
+          aria-label="play and pause"
+          onClick={timerControl}
+          onKeyPress={onKeyUp}
+        >
           <Play />
           <Pause />
         </button>{" "}
-        <button id="reset" onClick={reset}>
+        <button aria-label="reset timer" id="reset" onClick={reset}>
           <Reset />
         </button>{" "}
       </div>
