@@ -5,7 +5,7 @@ export class TimerLengthControl extends Component {
   render() {
     return (
       <div className="length-control">
-        <div id={this.props.titleID}>{this.props.title}</div>
+        <label for={this.props.minID}>{this.props.title}</label>
         <div className="relative">
           <input
             id={this.props.minID}
