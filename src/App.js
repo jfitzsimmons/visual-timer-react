@@ -1,3 +1,11 @@
+/**testjpf
+ *
+ * main.8625bef6.js:2 FirebaseError: Firebase: Error (auth/invalid-api-key).
+ * with serviceworker pwa
+ *
+ * python -m SimpleHTTPServer 8080
+ */
+
 import React, { useState, useEffect } from "react";
 import { Weather } from "./components/weather/Weather";
 import Timer from "./components/Timer";
